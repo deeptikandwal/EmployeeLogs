@@ -1,0 +1,32 @@
+pluginManagement {
+    repositories {
+        gradlePluginPortal()
+        google()
+        mavenCentral()
+
+    }
+    buildscript {
+        repositories {
+            jcenter()
+            mavenCentral()
+            google()
+            maven {
+                url 'https://maven.google.com'
+            }
+            maven{
+                url  'https://jitpack.io'
+            }
+        }
+    }
+}
+
+dependencyResolutionManagement {
+    repositoriesMode.set(RepositoriesMode.FAIL_ON_PROJECT_REPOS)
+    repositories {
+        google()
+        mavenCentral()
+    }
+}
+rootProject.name = "EmployeeLogs"
+include ':app'
+include ':utils'
