@@ -6,7 +6,6 @@ import com.project.employeeLogs.domain.model.EmployeeDomainModel
 import com.project.employeeLogs.views.viewmodel.EmployeeLogsViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
-import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.asFlow
 import kotlinx.coroutines.flow.flatMapConcat
 import kotlinx.coroutines.flow.flowOf
@@ -26,7 +25,7 @@ import retrofit2.HttpException
 import retrofit2.Response
 
 @ExperimentalCoroutinesApi
-class HomeScreenViewModelTest {
+class EmployeeLogsViewModelTest {
     @get:Rule
     var rule: TestRule = InstantTaskExecutorRule()
     val dispatcher = TestCoroutineDispatcher()
