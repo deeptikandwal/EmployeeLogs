@@ -27,7 +27,7 @@ class GetEmployeeUseCaseImplTest {
 
     @Test
     fun `get employees`()= runTest{
-        getEmployeesUseCaseImpl.getEmployees()
+        getEmployeesUseCaseImpl.invoke()
         Mockito.verify(onScreenRepository,Mockito.times(1)).getEmployees()
     }
 

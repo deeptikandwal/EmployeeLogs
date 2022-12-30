@@ -3,7 +3,6 @@ package com.project.employeeLogs.com.project.onscreen.views.viewmodel
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import com.project.employeeLogs.domain.usecase.GetEmployeesUseCase
 import com.project.employeeLogs.domain.model.EmployeeDomainModel
-import com.project.employeeLogs.views.intent.AnimeIntent
 import com.project.employeeLogs.views.viewmodel.EmployeeLogsViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
@@ -36,15 +35,12 @@ class HomeScreenViewModelTest {
     @Mock
     lateinit var getEmployeesUseCase: GetEmployeesUseCase
 
-    @Mock
-    lateinit var intentOnScreen: Channel<AnimeIntent>
 
     @Before
     fun setUp() {
         Dispatchers.setMain(dispatcher)
         MockitoAnnotations.initMocks(this)
         homeScreenViewModel = EmployeeLogsViewModel(getEmployeesUseCase)
-        homeScreenViewModel.intentOnScreen = intentOnScreen
         homeScreenViewModel.getEmployeesUseCase = getEmployeesUseCase
     }
 

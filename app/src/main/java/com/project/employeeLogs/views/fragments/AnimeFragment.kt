@@ -44,11 +44,11 @@ class AnimeFragment : Fragment() {
     }
 
     private fun setObserver() {
-        animeViewModel.title.observe(viewLifecycleOwner, {
-           lifecycleScope.launch {
+        animeViewModel.title.observe(viewLifecycleOwner) {
+            lifecycleScope.launchWhenStarted {
                 animeViewModel.getAnimeList()
             }
-        })
+        }
 
         lifecycleScope.launch {
             repeatOnLifecycle(Lifecycle.State.STARTED){

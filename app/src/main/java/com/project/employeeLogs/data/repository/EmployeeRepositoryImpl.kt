@@ -8,7 +8,6 @@ import com.project.employeeLogs.domain.model.EmployeeDomainModel
 import com.project.employeeLogs.domain.repository.EmployeeRepository
 import com.project.employeeLogs.utils.ConnectionUtils
 import kotlinx.coroutines.CoroutineDispatcher
-import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.FlowCollector
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.flowOn
@@ -22,21 +21,23 @@ class EmployeeRepositoryImpl @Inject constructor(
     val connectionUtils: ConnectionUtils
 ) :
     EmployeeRepository {
-    var dbDao = employeeDb.employeesDao()
+    val dbDao = employeeDb.employeesDao()
+    val flow = flow {
+        if (connectionUtils.isNetworkAvailable()) {
+            emitEmployees()
+        } else {
+            emit(getDomainEmployeeFromEntity())
+        }
+    }.flowOn(dispatcher)
 
-    override fun getEmployees(): Flow<List<EmployeeDomainModel>> {
-        return flow {
-            if (connectionUtils.isNetworkAvailable()) {
-               emitEmployees()
-            } else {
-                emit(getDomainFromEntity())
-            }
-        }.flowOn(dispatcher)
-    }
+    override fun getEmployees() = flow
 
-    private fun getDomainFromEntity() = mapper.mapToEmployeeDomainFromEntity(dbDao.getAllEmployees())
 
-    private fun getDomainFromDto(result: List<EmployeeListDto>) = mapper.mapToEmployeeDomainFromDto(result)
+    private fun getDomainEmployeeFromEntity() =
+        mapper.mapToEmployeeDomainFromEntity(dbDao.getAllEmployees())
+
+    private fun getDomainFromDto(result: List<EmployeeListDto>) =
+        mapper.mapToEmployeeDomainFromDto(result)
 
     private suspend fun FlowCollector<List<EmployeeDomainModel>>.emitEmployees() {
         val result = apiService.fetchEmployees()
@@ -46,7 +47,6 @@ class EmployeeRepositoryImpl @Inject constructor(
             insertEmployees(mapper.mapToEmployeeEntity(result))
         }
     }
-
 
 
 }

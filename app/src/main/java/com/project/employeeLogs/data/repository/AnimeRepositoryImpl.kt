@@ -7,7 +7,7 @@ import com.project.employeeLogs.domain.model.AnimeDomainModel
 import com.project.employeeLogs.domain.repository.AnimeRepository
 import com.project.employeeLogs.utils.ConnectionUtils
 import kotlinx.coroutines.CoroutineDispatcher
-import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.FlowCollector
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.flowOn
 import javax.inject.Inject
@@ -21,23 +21,32 @@ class AnimeRepositoryImpl @Inject constructor(
 ) : AnimeRepository {
     var animeDao = employeeDb.animesDao()
 
-    override fun getAnimeList(title: String?): Flow<List<AnimeDomainModel>> {
-        return flow {
+    override fun getAnimeList(title: String?)= flow {
             if(connectionUtils.isNetworkAvailable()){
-                val result = apiService.fetchAnimeUsingTitle(title)
-                animeDao.apply {
-                    this.deleteAllAnimes()
-                    this.insertAnimes(mapper.mapToAnimeEntity(result))
-
-                }
-                emit(mapper.mapToAnimeDomainFromDto(result))
+                emitAnime(title)
             }else{
-                if (!animeDao.getAllAnimes().isEmpty() && animeDao.getAnimeByName(title) != null) {
-                    emit(mapper.mapToAnimeDomainFromEntity(animeDao.getAllAnimes()))
-                }
+                getDomainAnimeFromEntity(title)
             }
         }.flowOn(dispatcher)
 
+    private suspend fun FlowCollector<List<AnimeDomainModel>>.getDomainAnimeFromEntity(
+        title: String?
+    ) {
+        if (!animeDao.getAllAnimes().isEmpty() && animeDao.getAnimeByName(title) != null) {
+            emit(mapper.mapToAnimeDomainFromEntity(animeDao.getAllAnimes()))
+        }
+    }
+
+    private suspend fun FlowCollector<List<AnimeDomainModel>>.emitAnime(
+        title: String?
+    ) {
+        val result = apiService.fetchAnimeUsingTitle(title)
+        animeDao.apply {
+            deleteAllAnimes()
+            insertAnimes(mapper.mapToAnimeEntity(result))
+
+        }
+        emit(mapper.mapToAnimeDomainFromDto(result))
     }
 
 

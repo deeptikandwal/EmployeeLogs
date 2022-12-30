@@ -3,7 +3,6 @@ package com.project.employeeLogs.com.project.onscreen.views.viewmodel
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import com.project.employeeLogs.domain.usecase.GetAnimesUseCase
 import com.project.employeeLogs.domain.model.AnimeDomainModel
-import com.project.employeeLogs.views.intent.AnimeIntent
 import com.project.employeeLogs.views.viewmodel.AnimeViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
@@ -33,22 +32,17 @@ class AnimeViewModelTest {
     val dispatcher = TestCoroutineDispatcher()
     private lateinit var animeViewModel: AnimeViewModel
 
-    @Mock
-    lateinit var intentOnScreen: Channel<AnimeIntent>
-
 
     @Before
     fun setUp() {
         Dispatchers.setMain(dispatcher)
         MockitoAnnotations.initMocks(this)
         animeViewModel = AnimeViewModel(getAnimesUseCase)
-        animeViewModel.intentOnScreen = intentOnScreen
         animeViewModel.getAnimesUseCase = getAnimesUseCase
     }
 
     @Test
     fun handleOperationSuccessTest(): Unit = runTest(dispatcher) {
-        intentOnScreen.send(AnimeIntent.FetchAnimes)
         Mockito.`when`(getAnimesUseCase.invoke("Naruto")).thenReturn(flowOf( listOf(
             AnimeDomainModel(1,"Naruto","pain")
         )))

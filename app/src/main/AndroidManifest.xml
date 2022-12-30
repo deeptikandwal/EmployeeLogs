@@ -4,7 +4,7 @@
 
     <uses-permission android:name="android.permission.INTERNET" />
     <application
-        android:name=".MainApplication"
+        android:name="com.project.employeeLogs.MainApplication"
         android:allowBackup="true"
         android:dataExtractionRules="@xml/data_extraction_rules"
         android:fullBackupContent="@xml/backup_rules"
@@ -12,10 +12,10 @@
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
-        android:theme="@style/Theme.OnScreenProject"
+        android:theme="@style/Theme.EmployeeLogs"
         tools:targetApi="31">
         <activity
-            android:name=".views.activity.MainActivity"
+            android:name="com.project.employeeLogs.views.activity.MainActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

@@ -1,7 +1,7 @@
 package com.project.employeeLogs.com.project.onscreen.domain.usecase
 
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
-import com.project.employeeLogs.domain.repository.EmployeeRepository
+import com.project.employeeLogs.domain.repository.AnimeRepository
 import com.project.employeeLogs.domain.usecase.GetAnimesUseCase
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.runTest
@@ -13,24 +13,24 @@ import org.mockito.MockitoAnnotations
 
 @OptIn(ExperimentalCoroutinesApi::class)
 
-class GetAnimeUseCaseImplTest {
+class GetAnimeUseCaseTest {
     @get:Rule
     var rule: TestRule = InstantTaskExecutorRule()
-    lateinit var getAnimesUseCaseImpl: GetAnimesUseCase
+    lateinit var getAnimesUseCase: GetAnimesUseCase
 
     @Mock
-    lateinit var onScreenRepository: EmployeeRepository
+    lateinit var animeRepository: AnimeRepository
 
     @Before
     fun setUp() {
         MockitoAnnotations.initMocks(this)
-        getAnimesUseCaseImpl = GetAnimesUseCase(onScreenRepository)
+        getAnimesUseCase = GetAnimesUseCase(animeRepository)
     }
 
     @Test
     fun getAnimesTest() = runTest {
-        getAnimesUseCaseImpl.getAnimes("Naruto")
-        Mockito.verify(onScreenRepository, Mockito.times(1)).getAnimeList("Naruto")
+        getAnimesUseCase.invoke("Naruto")
+        Mockito.verify(animeRepository, Mockito.times(1)).getAnimeList("Naruto")
     }
 
 }
