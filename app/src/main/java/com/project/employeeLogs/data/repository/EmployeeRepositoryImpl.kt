@@ -40,12 +40,14 @@ class EmployeeRepositoryImpl @Inject constructor(
         mapper.mapToEmployeeDomainFromDto(result)
 
     private suspend fun FlowCollector<List<EmployeeDomainModel>>.emitEmployees() {
-        val result = apiService.fetchEmployees()
-        emit(getDomainFromDto(result))
-        with(dbDao) {
-            deleteAllEmployees()
-            insertEmployees(mapper.mapToEmployeeEntity(result))
-        }
+         apiService.fetchEmployees().also {
+           dtoList->  emit(getDomainFromDto(dtoList))
+             with(dbDao) {
+                 deleteAllEmployees()
+                 insertEmployees(mapper.mapToEmployeeEntity(dtoList))
+             }
+         }
+
     }
 
 

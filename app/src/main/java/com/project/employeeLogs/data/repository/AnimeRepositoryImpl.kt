@@ -40,13 +40,14 @@ class AnimeRepositoryImpl @Inject constructor(
     private suspend fun FlowCollector<List<AnimeDomainModel>>.emitAnime(
         title: String?
     ) {
-        val result = apiService.fetchAnimeUsingTitle(title)
-        animeDao.apply {
-            deleteAllAnimes()
-            insertAnimes(mapper.mapToAnimeEntity(result))
-
+        apiService.fetchAnimeUsingTitle(title).also {
+                animeDtoList->  animeDao.apply {
+                deleteAllAnimes()
+                insertAnimes(mapper.mapToAnimeEntity(animeDtoList))
+            }
+            emit(mapper.mapToAnimeDomainFromDto(animeDtoList))
         }
-        emit(mapper.mapToAnimeDomainFromDto(result))
+
     }
 
 
