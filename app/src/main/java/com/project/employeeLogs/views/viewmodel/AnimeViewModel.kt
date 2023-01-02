@@ -35,7 +35,7 @@ class AnimeViewModel @Inject constructor(var getAnimesUseCase: GetAnimesUseCase)
     }
 
     private suspend fun fetchAnimeList() =
-        getAnimesUseCase.invoke(title.value.toString()).flatMapConcat { listAnimeDomain ->
+        getAnimesUseCase(title.value.toString()).flatMapConcat { listAnimeDomain ->
             listAnimeDomain.asFlow()
         }.toList()
 

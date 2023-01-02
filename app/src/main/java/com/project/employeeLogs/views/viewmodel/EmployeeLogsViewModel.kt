@@ -6,7 +6,6 @@ import com.project.employeeLogs.domain.model.EmployeeDomainModel
 import com.project.employeeLogs.domain.usecase.GetEmployeesUseCase
 import com.project.employeeLogs.views.viewState.EmployeeState
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.FlowPreview
 import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -28,7 +27,7 @@ class EmployeeLogsViewModel @Inject constructor(
         viewModelScope.launch {
             _state.emit(EmployeeState.LOADING)
             try {
-                getEmployeesUseCase.invoke().also { flowEmployeeList ->
+                getEmployeesUseCase().also { flowEmployeeList ->
                     val list = getEmployeeListFromFlow(flowEmployeeList)
                     _state.emit(EmployeeState.SUCCESS(list))
                 }
