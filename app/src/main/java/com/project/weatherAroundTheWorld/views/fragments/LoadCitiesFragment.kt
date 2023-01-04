@@ -6,6 +6,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.activity.OnBackPressedCallback
 import androidx.core.os.bundleOf
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
@@ -27,20 +28,26 @@ import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
-class LoadCitiesFragment : Fragment(){
+class LoadCitiesFragment : Fragment() {
     lateinit var fragmentLoadCitiesBinding: FragmentLoadCitiesBinding
     val mcitiesListViewModel: CitiesListViewModel by viewModels()
-    val citiesAdapter = CitiesAdapter(object:CitiesAdapter.OnClickListener{
-        override fun onItemClick(key: String,city:String) {
-            findNavController().navigate(R.id.homescreen_to_detailscreen, bundleOf(AppConstants.KEYFORCITY to key ,AppConstants.CITY to city ))
+    val citiesAdapter = CitiesAdapter(object : CitiesAdapter.OnClickListener {
+        override fun onItemClick(key: String, city: String) {
+            findNavController().navigate(
+                R.id.homescreen_to_detailscreen,
+                bundleOf(AppConstants.KEYFORCITY to key, AppConstants.CITY to city)
+            )
         }
     })
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View = DataBindingUtil.inflate<FragmentLoadCitiesBinding>(layoutInflater,
-        R.layout.fragment_load_cities,container,false).also {
-        fragmentLoadCitiesBinding =it
+    ): View = DataBindingUtil.inflate<FragmentLoadCitiesBinding>(
+        layoutInflater,
+        R.layout.fragment_load_cities, container, false
+    ).also {
+        fragmentLoadCitiesBinding = it
     }.root
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -50,15 +57,25 @@ class LoadCitiesFragment : Fragment(){
     }
 
     private fun setViews() {
-        with(fragmentLoadCitiesBinding){
+        requireActivity().onBackPressedDispatcher.addCallback(object : OnBackPressedCallback(true) {
+            override fun handleOnBackPressed() {
+                activity?.finish()
+            }
+        })
+        with(fragmentLoadCitiesBinding) {
             recycler.run {
-                addItemDecoration(DividerItemDecoration(recycler.context, (recycler.layoutManager as LinearLayoutManager).orientation))
-                adapter=citiesAdapter
+                addItemDecoration(
+                    DividerItemDecoration(
+                        recycler.context,
+                        (recycler.layoutManager as LinearLayoutManager).orientation
+                    )
+                )
+                adapter = citiesAdapter
             }
             back.setOnClickListener {
                 activity?.finish()
             }
-            }
+        }
     }
 
     private fun setObserver() {
@@ -99,13 +116,11 @@ class LoadCitiesFragment : Fragment(){
     }
 
     private fun updateList(cities: List<CitiesDomainModel>) {
-        with(citiesAdapter){
+        with(citiesAdapter) {
             setDataList(cities)
             notifyDataSetChanged()
         }
     }
-
-
 
 
 }

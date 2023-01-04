@@ -21,7 +21,9 @@ import com.project.weatherAroundTheWorld.utils.AppConstants
 import com.project.weatherAroundTheWorld.views.viewState.ForeCastState
 import com.project.weatherAroundTheWorld.views.viewmodel.ForeCastViewModel
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 
 @AndroidEntryPoint
 class ForeCastFragment : Fragment() {
@@ -53,7 +55,6 @@ class ForeCastFragment : Fragment() {
             animeViewModel.getForeCastList(arguments?.getString(AppConstants.KEYFORCITY).toString())
         }
 
-
         lifecycleScope.launch {
             repeatOnLifecycle(Lifecycle.State.STARTED) {
                 animeViewModel.state.collect {
@@ -63,14 +64,16 @@ class ForeCastFragment : Fragment() {
                         }
                         is ForeCastState.LOADING -> {
                             with(fragmentForecastBinding) {
-                                progress.visibility = View.VISIBLE
+                                withContext(Dispatchers.Main){
+                                    progress.visibility = View.VISIBLE
+                                }
                             }
                         }
 
                         is ForeCastState.SUCCESS -> {
                             fragmentForecastBinding.run {
-                                progress.visibility = View.GONE
                                 updateUi(it.forcast.get(0))
+                                progress.visibility = View.GONE
                             }
 
                         }
@@ -86,6 +89,7 @@ class ForeCastFragment : Fragment() {
 
     private fun updateUi(forecastDomainModel: DailyForecastDomainModel) {
         with(fragmentForecastBinding) {
+
             date.text = forecastDomainModel.date
             quote.text =
                 arguments?.getString(AppConstants.CITY).plus(" : ").plus(forecastDomainModel.text)
@@ -93,13 +97,15 @@ class ForeCastFragment : Fragment() {
                 context?.getString(R.string.mintemperature).plus(forecastDomainModel.minValue)
             if (forecastDomainModel.hasprecipitation) maxValue.text =
                 context?.getString(R.string.higlyprecipitated) else maxValue.text =context?.getString(R.string.noprecipitated)
+        }.also {
+            Glide.with(this)
+                .load(
+                    getResources()
+                        .getIdentifier(getBitmap(forecastDomainModel), "drawable", context?.packageName)
+                )
+                .into(fragmentForecastBinding.imgview)
         }
-        Glide.with(this)
-            .load(
-                getResources()
-                    .getIdentifier(getBitmap(forecastDomainModel), "drawable", context?.packageName)
-            )
-            .into(fragmentForecastBinding.imgview)
+
     }
 
     fun getBitmap(forecastDomainModel: DailyForecastDomainModel): String {
@@ -115,7 +121,7 @@ class ForeCastFragment : Fragment() {
     private fun setViews() {
        requireActivity().onBackPressedDispatcher.addCallback(object:OnBackPressedCallback(true){
            override fun handleOnBackPressed() {
-               findNavController().navigateUp()
+               findNavController().navigate(R.id.homescreen)
            }
        })
         with(fragmentForecastBinding) {
