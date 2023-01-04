@@ -30,3 +30,6 @@ dependencyResolutionManagement {
 rootProject.name = "WeatherAroundTheWorld"
 include ':app'
 include ':utils'
+include ':data:api'
+include ':domain'
+include ':di'

@@ -19,7 +19,7 @@ import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.project.weatherAroundTheWorld.R
 import com.project.weatherAroundTheWorld.databinding.FragmentLoadCitiesBinding
-import com.project.weatherAroundTheWorld.domain.model.CitiesDomainModel
+import com.project.domain.model.CitiesDomainModel
 import com.project.weatherAroundTheWorld.utils.AppConstants
 import com.project.weatherAroundTheWorld.views.adapter.CitiesAdapter
 import com.project.weatherAroundTheWorld.views.viewState.WeatherState
@@ -115,7 +115,7 @@ class LoadCitiesFragment : Fragment() {
         }
     }
 
-    private fun updateList(cities: List<CitiesDomainModel>) {
+    private fun updateList(cities: List<com.project.domain.model.CitiesDomainModel>) {
         with(citiesAdapter) {
             setDataList(cities)
             notifyDataSetChanged()

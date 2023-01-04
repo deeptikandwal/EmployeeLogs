@@ -16,7 +16,7 @@ import androidx.navigation.fragment.findNavController
 import com.bumptech.glide.Glide
 import com.project.weatherAroundTheWorld.R
 import com.project.weatherAroundTheWorld.databinding.FragmentForecastBinding
-import com.project.weatherAroundTheWorld.domain.model.DailyForecastDomainModel
+import com.project.domain.model.DailyForecastDomainModel
 import com.project.weatherAroundTheWorld.utils.AppConstants
 import com.project.weatherAroundTheWorld.views.viewState.ForeCastState
 import com.project.weatherAroundTheWorld.views.viewmodel.ForeCastViewModel

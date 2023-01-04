@@ -2,7 +2,7 @@ package com.project.weatherAroundTheWorld.views.viewmodel
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.project.weatherAroundTheWorld.domain.usecase.GetForecastUseCase
+import com.project.domain.usecase.GetForecastUseCase
 import com.project.weatherAroundTheWorld.utils.ApiConstants
 import com.project.weatherAroundTheWorld.views.viewState.ForeCastState
 import dagger.hilt.android.lifecycle.HiltViewModel

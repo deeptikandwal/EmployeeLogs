@@ -22,8 +22,6 @@ Dapp/src/main/java/com/project/employeeLogs/data/response/AnimeDto.kt,7\2\72231
 Kapp/src/main/java/com/project/employeeLogs/data/response/EmployeeListDto.kt,d\8\d81967dea190bc4356b8f5a3f35c061ce85ccd24
 B
 utils/build.gradle,3\d\3d25e1f20477d3832dc1c6ae6f7dacae057bb981
-|
-Lapp/src/androidTest/java/com/project/employeeLogs/ExampleInstrumentedTest.kt,e\f\ef2facce86a966720787adea25dcb4cd1c554665
 s
 Capp/src/main/java/com/project/employeeLogs/di/module/UtilsModule.kt,2\2\22d81ad042f77078f25200432ad1763624d6a715
 {
@@ -72,7 +70,5 @@ p
 Lapp/src/main/java/com/project/employeeLogs/views/viewmodel/AnimeViewModel.kt,4\2\4237eaeffbf3f47d6a3808d55f415878c4c8fc37
 A
 gradle.properties,2\a\2afbb999f001938c88fa43fc2ef52abf0f8213e4
-?
-settings.gradle,0\5\05efc8b1657769a27696d478ded1e95f38737233
 X
 (gradle/wrapper/gradle-wrapper.properties,f\b\fbe448ebfc3eb2d4e308f6b8b043666f5b57235e

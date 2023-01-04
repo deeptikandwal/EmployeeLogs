@@ -1,6 +1,6 @@
 package com.project.weatherAroundTheWorld.views.viewState
 
-import com.project.weatherAroundTheWorld.domain.model.DailyForecastDomainModel
+import com.project.domain.model.DailyForecastDomainModel
 
 sealed class ForeCastState{
     object IDLE:ForeCastState()
