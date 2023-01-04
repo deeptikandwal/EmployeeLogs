@@ -1,6 +1,7 @@
 package com.project.weatherAroundTheWorld.com.project.onscreen.domain.usecase
 
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
+import com.project.weatherAroundTheWorld.domain.repository.ForecastRepository
 import com.project.weatherAroundTheWorld.domain.usecase.GetForecastUseCase
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.runTest
@@ -12,24 +13,25 @@ import org.mockito.MockitoAnnotations
 
 @OptIn(ExperimentalCoroutinesApi::class)
 
-class GetAnimeUseCaseTest {
+class GetForecastUseCaseTest {
     @get:Rule
     var rule: TestRule = InstantTaskExecutorRule()
-    lateinit var getAnimesUseCase: GetForecastUseCase
+    lateinit var getForecastUseCase: GetForecastUseCase
 
     @Mock
-    lateinit var animeRepository: AnimeRepository
+    lateinit var forecastRepository:ForecastRepository
+    val apikey="ddddddddddddddddddddddd"
 
     @Before
     fun setUp() {
         MockitoAnnotations.initMocks(this)
-        getAnimesUseCase = GetForecastUseCase(animeRepository)
+        getForecastUseCase = GetForecastUseCase(forecastRepository)
     }
 
     @Test
     fun getAnimesTest() = runTest {
-        getAnimesUseCase.invoke("Naruto")
-        Mockito.verify(animeRepository, Mockito.times(1)).getAnimeList("Naruto")
+        getForecastUseCase.invoke("11234",apikey)
+        Mockito.verify(forecastRepository, Mockito.times(1)).getForecasts("11234",apikey)
     }
 
 }

@@ -6,6 +6,10 @@ import com.project.weatherAroundTheWorld.data.api.ApiService
 import com.project.weatherAroundTheWorld.data.db.WeatherDb
 import com.project.weatherAroundTheWorld.data.db.dao.ForecastDao
 import com.project.weatherAroundTheWorld.data.db.entity.AnimeEntity
+import com.project.weatherAroundTheWorld.data.mapper.DailyForecastMapper
+import com.project.weatherAroundTheWorld.data.repository.ForecastRepositoryImpl
+import com.project.weatherAroundTheWorld.data.response.*
+import com.project.weatherAroundTheWorld.domain.model.DailyForecastDomainModel
 import com.project.weatherAroundTheWorld.utils.ConnectionUtils
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.asFlow
@@ -27,21 +31,27 @@ import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import java.net.HttpURLConnection
 
-class AnimeRepositoryImplTest {
+class ForecastRepositoryImplTest {
+    private var forecastDto= listOf(
+        DailyForecastDto("",
+        Temperature(Metric(23.34,"C"),),
+        "Hazy Cloud",false,true
+        ),)
+    val apikey="ddddddddddddddddddddddd"
 
     @get:Rule
     var rule: TestRule = InstantTaskExecutorRule()
     val dispatcher = TestCoroutineDispatcher()
     lateinit var mockWebServer:MockWebServer
     lateinit var apiService: ApiService
-    lateinit var animeRepositoryImpl: AnimeRepositoryImpl
+    lateinit var forecastRepositoryImpl: ForecastRepositoryImpl
 
     @Mock
-    lateinit var employeeDb:WeatherDb
+    lateinit var weatherDb:WeatherDb
     @Mock
-    lateinit var animeDao: ForecastDao
+    lateinit var forecastDao: ForecastDao
     @Mock
-    lateinit var mapper: AnimeMapper
+    lateinit var mapper: DailyForecastMapper
     @Mock
     lateinit var connectionUtils: ConnectionUtils
     @Before
@@ -56,26 +66,23 @@ class AnimeRepositoryImplTest {
             .addConverterFactory(GsonConverterFactory.create())
             .build()
             .create(ApiService::class.java)
-        Mockito.`when`(employeeDb.animesDao()).thenReturn(animeDao)
-        animeRepositoryImpl = AnimeRepositoryImpl(employeeDb, apiService, mapper, dispatcher, connectionUtils)
+        Mockito.`when`(weatherDb.foreCastDao()).thenReturn(forecastDao)
+        forecastRepositoryImpl = ForecastRepositoryImpl(weatherDb, apiService, dispatcher, mapper,connectionUtils)
     }
     @Test
     fun `get anime from db using flow`() = runTest {
 
-        val animeDomain = listOf(
-            AnimeDomainModel(1, "Naruto", "It's my nindo",),
-            AnimeDomainModel(2, "Death Note", "")
+        val forecastDomain = listOf(
+            DailyForecastDomainModel(1,"Hazy Cloud" ,"7C" ,"",true,false),
         )
-        val animeEntity = listOf(AnimeEntity(1, "Naruto", "It's my nindo"))
 
         Mockito.`when`(connectionUtils.isNetworkAvailable()).thenReturn(false)
-        Mockito.`when`(animeDao.getAllAnimes()).thenReturn(animeEntity)
-        Mockito.`when`(animeDao.getAnimeByName("Naruto")).thenReturn(AnimeEntity(1, "Naruto", "It's my nindo"))
-        Mockito.`when`(mapper.mapToAnimeDomainFromEntity(animeEntity))
-            .thenReturn(animeDomain)
-        val result = animeRepositoryImpl.getAnimeList("Naruto").flatMapConcat { it.asFlow() }.toList()
-            .get(0).quote
-        Assert.assertEquals(result, "It's my nindo")
+        Mockito.`when`(forecastDao.getForecast()).thenReturn(forecastDomain)
+        Mockito.`when`(mapper.mapToForecastDomain(forecastDto))
+            .thenReturn(forecastDomain)
+        val result = forecastRepositoryImpl.getForecasts("11234",apikey).flatMapConcat { it.asFlow() }.toList()
+            .get(0).isDayTime
+        Assert.assertEquals(result, true)
 
     }
 
@@ -96,22 +103,18 @@ class AnimeRepositoryImplTest {
         val expectedResponse = MockResponse()
             .setResponseCode(HttpURLConnection.HTTP_NOT_FOUND)
         mockWebServer.enqueue(expectedResponse)
-        val actualResponse = apiService.fetchAnimeUsingTitle("bbbbbbb")
+        val actualResponse = apiService.getForecast("11234",apikey)
         Assert.assertEquals(actualResponse.size, 0)
     }
 
     @Test
     fun `get anime quotes with http code 200`() = runTest {
-        val employees = arrayListOf(
-            AnimeDto(1, "Naruto", "pain", "This is my nindo"),
-        )
-
         val expectedResponse = MockResponse()
             .setResponseCode(HttpURLConnection.HTTP_OK)
-            .setBody(Gson().toJson(employees))
+            .setBody(Gson().toJson(forecastDto))
         mockWebServer.enqueue(expectedResponse)
-        val actualResponse = apiService.fetchAnimeUsingTitle("Naruto")
-        Assert.assertEquals(actualResponse.get(0).character, "pain")
+        val actualResponse = apiService.getForecast("11234",apikey)
+        Assert.assertEquals(actualResponse.get(0).isDayTime, true)
     }
     @After
     fun tearDown() {

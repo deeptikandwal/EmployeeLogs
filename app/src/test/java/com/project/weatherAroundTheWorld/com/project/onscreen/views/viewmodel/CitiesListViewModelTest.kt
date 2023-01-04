@@ -1,6 +1,8 @@
 package com.project.weatherAroundTheWorld.com.project.onscreen.views.viewmodel
 
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
+import com.project.weatherAroundTheWorld.domain.model.CitiesDomainModel
+import com.project.weatherAroundTheWorld.domain.usecase.GetCitiesListUseCase
 import com.project.weatherAroundTheWorld.views.viewmodel.CitiesListViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
@@ -23,35 +25,39 @@ import retrofit2.HttpException
 import retrofit2.Response
 
 @ExperimentalCoroutinesApi
-class EmployeeLogsViewModelTest {
+class CitiesListViewModelTest {
     @get:Rule
     var rule: TestRule = InstantTaskExecutorRule()
     val dispatcher = TestCoroutineDispatcher()
-    lateinit var homeScreenViewModel: CitiesListViewModel
+    lateinit var citiesListViewModel: CitiesListViewModel
 
     @Mock
-    lateinit var getEmployeesUseCase: GetEmployeesUseCase
+    lateinit var getCitiesListUseCase: GetCitiesListUseCase
+    val apikey="ddddddddddddddddddddddd"
 
 
     @Before
     fun setUp() {
         Dispatchers.setMain(dispatcher)
         MockitoAnnotations.initMocks(this)
-        homeScreenViewModel = CitiesListViewModel(getEmployeesUseCase)
-        homeScreenViewModel.getCitiesListUseCase = getEmployeesUseCase
+        citiesListViewModel = CitiesListViewModel(getCitiesListUseCase)
+        citiesListViewModel.getCitiesListUseCase = getCitiesListUseCase
     }
 
     @Test
     fun handleOperationSuccessTest(): Unit = runTest {
-        Mockito.`when`(getEmployeesUseCase.invoke()).thenReturn(flowOf( listOf(EmployeeDomainModel(1,"Jones","jonas@gmail.com",""))))
-        val employeeList=getEmployeesUseCase.invoke().flatMapConcat { it.asFlow()}.toList()
+        Mockito.`when`(getCitiesListUseCase(apikey)).thenReturn(flowOf( listOf(
+            CitiesDomainModel(1, "11234", "Europe(23.45,45.56)", "Berlin(Germany)"),
+        ))
+        )
+        val employeeList=getCitiesListUseCase(apikey).flatMapConcat { it.asFlow()}.toList()
         Assert.assertNotEquals(employeeList.size, 0)
-        Assert.assertEquals(employeeList.get(0).name, "Jones")
+        Assert.assertEquals(employeeList.get(0).key, "11234")
     }
 
     @Test(expected = retrofit2.HttpException::class)
     fun handleOperationFailTest(): Unit = runTest {
-        Mockito.`when`(getEmployeesUseCase.invoke()).thenThrow(
+        Mockito.`when`(getCitiesListUseCase(apikey)).thenThrow(
             HttpException(
                 Response.error<Any>(
                     409,
@@ -59,7 +65,7 @@ class EmployeeLogsViewModelTest {
                 )
             )
         )
-        Assert.assertEquals(getEmployeesUseCase.invoke().flatMapConcat { it.asFlow()}.toList().size, 0)
+        Assert.assertEquals(getCitiesListUseCase(apikey).flatMapConcat { it.asFlow()}.toList().size, 0)
 
     }
 

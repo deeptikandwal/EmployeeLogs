@@ -1,6 +1,9 @@
 package com.project.weatherAroundTheWorld.com.project.onscreen.domain.usecase
 
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
+import com.project.weatherAroundTheWorld.domain.repository.CitiesRepository
+import com.project.weatherAroundTheWorld.domain.usecase.GetCitiesListUseCase
+import com.project.weatherAroundTheWorld.utils.ApiConstants
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.runTest
 import org.junit.*
@@ -11,22 +14,24 @@ import org.mockito.MockitoAnnotations
 
 @OptIn(ExperimentalCoroutinesApi::class)
 
-class GetEmployeeUseCaseImplTest {
+class GetCitiesListUseCaseTest {
     @get:Rule
     var rule: TestRule = InstantTaskExecutorRule()
-    lateinit var getEmployeesUseCaseImpl: GetEmployeesUseCase
+    lateinit var getCitiesListUseCase: GetCitiesListUseCase
     @Mock
-    lateinit var onScreenRepository: EmployeeRepository
+    lateinit var citiesRepository: CitiesRepository
+    val apikey="ddddddddddddddddddddddd"
+
     @Before
     fun setUp(){
         MockitoAnnotations.initMocks(this)
-        getEmployeesUseCaseImpl= GetEmployeesUseCase(onScreenRepository)
+        getCitiesListUseCase= GetCitiesListUseCase(citiesRepository)
     }
 
     @Test
     fun `get employees`()= runTest{
-        getEmployeesUseCaseImpl.invoke()
-        Mockito.verify(onScreenRepository,Mockito.times(1)).getEmployees()
+        getCitiesListUseCase.invoke(apikey)
+        Mockito.verify(citiesRepository,Mockito.times(1)).fetchCitiesList(apikey)
     }
 
 }

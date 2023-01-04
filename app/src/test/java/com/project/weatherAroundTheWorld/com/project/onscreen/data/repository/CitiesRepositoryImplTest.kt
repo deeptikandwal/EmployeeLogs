@@ -5,7 +5,14 @@ import com.google.gson.Gson
 import com.project.weatherAroundTheWorld.data.api.ApiService
 import com.project.weatherAroundTheWorld.data.db.WeatherDb
 import com.project.weatherAroundTheWorld.data.db.dao.CitiesDao
-import com.project.weatherAroundTheWorld.data.db.entity.EmployeeEntity
+import com.project.weatherAroundTheWorld.data.mapper.CitiesMapper
+import com.project.weatherAroundTheWorld.data.repository.CitiesRepositoryImpl
+import com.project.weatherAroundTheWorld.data.response.CitiesDto
+import com.project.weatherAroundTheWorld.data.response.Country
+import com.project.weatherAroundTheWorld.data.response.GeoPosition
+import com.project.weatherAroundTheWorld.data.response.Region
+import com.project.weatherAroundTheWorld.domain.model.CitiesDomainModel
+import com.project.weatherAroundTheWorld.utils.ApiConstants
 import com.project.weatherAroundTheWorld.utils.ConnectionUtils
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
@@ -25,20 +32,20 @@ import java.net.HttpURLConnection
 
 
 @OptIn(ExperimentalCoroutinesApi::class)
-class EmployeeRepositoryImplTest {
-    private var employees = arrayListOf(
-        EmployeeListDto(1, "Jones", "jonas34@gmail.com", ""),
-        EmployeeListDto(2, "Samantha", "sam@gmail.com", "")
-    )
+class CitiesRepositoryImplTest {
+    private var citiesDto= listOf(CitiesDto("Berlin","Germany","11234", Region("Europe"), Country("Germany"),
+        GeoPosition("23.45","45.56")
+    ),)
+    val apikey="ddddddddddddddddddddddd"
 
     @get:Rule
     var rule: TestRule = InstantTaskExecutorRule()
     val dispatcher = TestCoroutineDispatcher()
 
-    lateinit var employeeRepositoryImpl: EmployeeRepositoryImpl
+    lateinit var citiesRepositoryImpl: CitiesRepositoryImpl
 
     @Mock
-    lateinit var employeeDb: WeatherDb
+    lateinit var weatherDb: WeatherDb
 
     @Mock
     lateinit var connectionUtils: ConnectionUtils
@@ -48,7 +55,7 @@ class EmployeeRepositoryImplTest {
 
 
     @Mock
-    lateinit var mapper: EmployeeMapper
+    lateinit var mapper: CitiesMapper
 
     private lateinit var mockWebServer: MockWebServer
     lateinit var apiService: ApiService
@@ -65,27 +72,23 @@ class EmployeeRepositoryImplTest {
             .addConverterFactory(GsonConverterFactory.create())
             .build()
             .create(ApiService::class.java)
-        Mockito.`when`(employeeDb.employeesDao()).thenReturn(dbDao)
-        employeeRepositoryImpl =
-            EmployeeRepositoryImpl(employeeDb, apiService, mapper, dispatcher, connectionUtils)
+        Mockito.`when`(weatherDb.citiesDao()).thenReturn(dbDao)
+        citiesRepositoryImpl = CitiesRepositoryImpl(weatherDb, apiService,  dispatcher,mapper, connectionUtils)
     }
 
     @Test
     fun `get Employees from db using flow`() = runTest {
-
-        val employeeDomain = listOf(
-            EmployeeDomainModel(1, "James", "james@gmail.com", ""),
-            EmployeeDomainModel(2, "Purna", "purna13@orkut.in", "")
+        val citiesDomainList = listOf(
+            CitiesDomainModel(1, "11234", "Europe(23.45,45.56)", "Berlin(Germany)"),
         )
-        val employeeEntity = listOf<EmployeeEntity>()
 
         Mockito.`when`(connectionUtils.isNetworkAvailable()).thenReturn(false)
-        Mockito.`when`(dbDao.getAllEmployees()).thenReturn(employeeEntity)
-        Mockito.`when`(mapper.mapToEmployeeDomainFromEntity(employeeEntity))
-            .thenReturn(employeeDomain)
-        val result = employeeRepositoryImpl.getEmployees().flatMapConcat { it.asFlow() }.toList()
-            .get(1).email
-        Assert.assertEquals(result, "purna13@orkut.in")
+        Mockito.`when`(dbDao.getAlLCities()).thenReturn(citiesDomainList)
+        Mockito.`when`(mapper.mapCitiesToDomain(citiesDto))
+            .thenReturn(citiesDomainList)
+        val result = citiesRepositoryImpl.fetchCitiesList(ApiConstants.WEATHER_API_KEY).flatMapConcat { it.asFlow() }.toList()
+            .get(0).city
+        Assert.assertEquals(result, "Berlin(Germany)")
 
     }
 
@@ -107,10 +110,10 @@ class EmployeeRepositoryImplTest {
     fun `get employees with http code 200`() = runTest {
         val expectedResponse = MockResponse()
             .setResponseCode(HttpURLConnection.HTTP_OK)
-            .setBody(Gson().toJson(employees))
+            .setBody(Gson().toJson(citiesDto))
         mockWebServer.enqueue(expectedResponse)
-        val actualResponse = apiService.fetchEmployees()
-        Assert.assertEquals(actualResponse.get(0).email, "jonas34@gmail.com")
+        val actualResponse = apiService.fetchCitiesList("50",apikey)
+        Assert.assertEquals(actualResponse.get(0).localizedName, "Berlin")
     }
 
     @Test(expected = retrofit2.HttpException::class)
@@ -119,7 +122,7 @@ class EmployeeRepositoryImplTest {
             .setResponseCode(HttpURLConnection.HTTP_BAD_REQUEST)
             .setBody(Gson().toJson(null))
         mockWebServer.enqueue(expectedResponse)
-        val actualResponse = apiService.fetchEmployees()
+        val actualResponse = apiService.fetchCitiesList("50",apikey)
         Assert.assertEquals(actualResponse.size, 0)
 
     }
