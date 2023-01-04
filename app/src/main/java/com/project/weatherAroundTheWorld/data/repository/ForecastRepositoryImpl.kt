@@ -24,13 +24,20 @@ class ForecastRepositoryImpl(
     val connectionUtils: ConnectionUtils
 ) : ForecastRepository {
     val dao = weatherDb.foreCastDao()
+
     @RequiresApi(Build.VERSION_CODES.O)
-    override fun getForecasts(keyForCity: String, apiKey: String): Flow<DailyForecastDomainModel> =
+    override fun getForecasts(
+        keyForCity: String,
+        apiKey: String
+    ): Flow<List<DailyForecastDomainModel>> =
         flow{
             if (connectionUtils.isNetworkAvailable()) {
-                apiService.getForecast(keyForCity, apiKey).also {dto->
+                apiService.getForecast(keyForCity, apiKey).also { dto ->
                     emit(dailyForecastDomainModel(dto))
-                    dao.insertForecast(dailyForecastDomainModel(dto))
+                    with(dao) {
+                        deleteForecasts()
+                        insertForecasts(dailyForecastDomainModel(dto))
+                    }
                 }
             } else {
                 emit(dao.getForecast())
@@ -38,6 +45,6 @@ class ForecastRepositoryImpl(
         }.flowOn(dispatcher)
 
     @RequiresApi(Build.VERSION_CODES.O)
-    private fun dailyForecastDomainModel(dto: DailyForecastDto) =
+    private fun dailyForecastDomainModel(dto: List<DailyForecastDto>) =
         mapper.mapToForecastDomain(dto)
 }

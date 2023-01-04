@@ -8,9 +8,8 @@ data class DailyForecastDomainModel(
     @PrimaryKey(autoGenerate = true)
     val id:Int=0,
     val text:String,
-    val dayIconPhrase:String,
-    val nightIconPhrase:String,
     val minValue: String,
-    val maxValue:String,
-    val date:String
+    val date:String,
+    val isDayTime:Boolean,
+    val hasprecipitation:Boolean
 )

@@ -9,11 +9,11 @@ import com.project.weatherAroundTheWorld.domain.model.DailyForecastDomainModel
 @Dao
 interface  ForecastDao {
     @Query("SELECT * FROM Forecast")
-    fun getForecast():DailyForecastDomainModel
+    fun getForecast():List<DailyForecastDomainModel>
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    suspend fun insertForecast(foreCast:DailyForecastDomainModel)
+    suspend fun insertForecasts(foreCast:List<DailyForecastDomainModel>)
 
     @Query("DELETE FROM Forecast")
-    suspend fun deleteForecast()
+    suspend fun deleteForecasts()
 }

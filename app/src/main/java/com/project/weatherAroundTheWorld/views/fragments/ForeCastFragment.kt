@@ -58,6 +58,7 @@ class ForeCastFragment : Fragment() {
                 animeViewModel.state.collect {
                     when (it) {
                         is ForeCastState.IDLE -> {
+                            //no ops
                         }
                         is ForeCastState.LOADING -> {
                             with(fragmentForecastBinding) {
@@ -68,7 +69,7 @@ class ForeCastFragment : Fragment() {
                         is ForeCastState.SUCCESS -> {
                             fragmentForecastBinding.run {
                                 progress.visibility = View.GONE
-                                updateUi(it.forcast)
+                                updateUi(it.forcast.get(0))
                             }
 
                         }
@@ -84,17 +85,31 @@ class ForeCastFragment : Fragment() {
 
     private fun updateUi(forecastDomainModel: DailyForecastDomainModel) {
         with(fragmentForecastBinding) {
-            dayNight.text=forecastDomainModel.date
-            quote.text = arguments?.getString(AppConstants.CITY).plus(" : ").plus(forecastDomainModel.text)
-            minValue.text = context?.getString(R.string.mintemperature).plus(forecastDomainModel.minValue)
-            maxValue.text = context?.getString(R.string.maxtemperature).plus(forecastDomainModel.maxValue)
+            date.text = forecastDomainModel.date
+            quote.text =
+                arguments?.getString(AppConstants.CITY).plus(" : ").plus(forecastDomainModel.text)
+            minValue.text =
+                context?.getString(R.string.mintemperature).plus(forecastDomainModel.minValue)
+            if (forecastDomainModel.hasprecipitation) maxValue.text =
+                context?.getString(R.string.higlyprecipitated) else maxValue.text =context?.getString(R.string.noprecipitated)
         }
         Glide.with(this)
-            .load(getResources()
-                .getIdentifier("night_sky", "drawable",context?.packageName ))
-                .into(fragmentForecastBinding.imgview)
+            .load(
+                getResources()
+                    .getIdentifier(getBitmap(forecastDomainModel), "drawable", context?.packageName)
+            )
+            .into(fragmentForecastBinding.imgview)
     }
 
+    fun getBitmap(forecastDomainModel: DailyForecastDomainModel): String {
+        if (!forecastDomainModel.isDayTime) {
+            fragmentForecastBinding.dayNight.text =  context?.getString(R.string.nightsky)
+            return "night_sky"
+        } else{
+            fragmentForecastBinding.dayNight.text =  context?.getString(R.string.daytime)
+            return "day_sky"
+        }
+    }
 
     private fun setViews() {
         with(fragmentForecastBinding) {

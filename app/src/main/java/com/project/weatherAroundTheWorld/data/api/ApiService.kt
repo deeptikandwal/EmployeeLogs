@@ -11,9 +11,9 @@ interface ApiService {
    suspend fun fetchCitiesList(@Path("numberOfCities") numberOfCities: String,
                                @Query("apikey")apiKey:String): List<CitiesDto>
 
-    @GET("forecasts/v1/daily/1day/{keyForCity}")
+    @GET("currentconditions/v1/{keyForCity}")
     suspend fun getForecast(
         @Path("keyForCity") keyForCity: String,
         @Query("apikey") apiKey: String
-    ):DailyForecastDto
+    ):List<DailyForecastDto>
 }

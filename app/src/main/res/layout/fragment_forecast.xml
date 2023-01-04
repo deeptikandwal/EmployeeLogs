@@ -74,15 +74,29 @@
 
                 <ImageView
                     android:id="@+id/imgview"
-                    android:layout_width="match_parent"
-                    android:layout_height="300dp"
-                    android:background="@drawable/night_sky"
+                    android:layout_width="300dp"
+                    android:layout_height="200dp"
+                    android:scaleType="fitXY"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
             </androidx.cardview.widget.CardView>
 
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/date"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/martianmonobold"
+                android:gravity="center"
+                android:padding="@dimen/medium_text"
+                android:textColor="@color/teal_700"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.0"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/cardview"
+                app:layout_constraintVertical_bias="0.124" />
 
             <androidx.appcompat.widget.AppCompatTextView
                 android:id="@+id/quote"
@@ -91,12 +105,13 @@
                 android:layout_marginEnd="@dimen/large_padding"
                 android:fontFamily="@font/martianmonoregular"
                 android:textSize="@dimen/medium_text"
+                android:padding="5sp"
                 android:layout_marginStart="@dimen/large_padding"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="1.0"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/cardview"
+                app:layout_constraintTop_toBottomOf="@+id/date"
                 app:layout_constraintVertical_bias="0.157" />
 
             <androidx.appcompat.widget.AppCompatTextView
@@ -124,8 +139,8 @@
                 android:textColor="@color/black"
                 android:layout_marginStart="@dimen/large_padding"
                 android:layout_marginEnd="@dimen/large_padding"
-                android:fontFamily="@font/martianmonoregular"
-                android:textFontWeight="800"
+                android:fontFamily="@font/martianmonomedium"
+                android:textFontWeight="500"
                 android:text="@string/maxtemperature"
                 android:textSize="@dimen/medium_text"
                 app:layout_constraintBottom_toBottomOf="parent"
