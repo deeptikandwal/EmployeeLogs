@@ -2,7 +2,7 @@
 <navigation xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/employee_nav_graph"
+    android:id="@+id/weather_nav_graph"
     app:startDestination="@id/homescreen">
 
     <fragment android:name="com.project.weatherAroundTheWorld.views.fragments.LoadCitiesFragment"
@@ -10,15 +10,14 @@
         android:id="@+id/homescreen"
         tools:layout="@layout/fragment_load_cities">
         <action android:id="@+id/homescreen_to_detailscreen"
-            app:destination="@id/animeFragment"
-            app:launchSingleTop="true"
+            app:destination="@id/foreCastFragment"
             app:popUpToInclusive="true"
             app:popUpTo="@id/homescreen"/>
     </fragment>
 
     <fragment android:name="com.project.weatherAroundTheWorld.views.fragments.ForeCastFragment"
-        android:label="AnimeFragment"
-        android:id="@+id/animeFragment"
+        android:label="ForeCastFragment"
+        android:id="@+id/foreCastFragment"
         tools:layout="@layout/fragment_forecast">
 
     </fragment>

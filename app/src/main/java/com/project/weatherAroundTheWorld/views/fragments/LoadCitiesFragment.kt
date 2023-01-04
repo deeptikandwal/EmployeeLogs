@@ -59,8 +59,6 @@ class LoadCitiesFragment : Fragment(){
                 activity?.finish()
             }
             }
-
-
     }
 
     private fun setObserver() {
