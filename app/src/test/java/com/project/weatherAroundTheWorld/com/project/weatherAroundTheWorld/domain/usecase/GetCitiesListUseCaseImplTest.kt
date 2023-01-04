@@ -1,9 +1,8 @@
-package com.project.weatherAroundTheWorld.com.project.onscreen.domain.usecase
+package com.project.weatherAroundTheWorld.com.project.weatherAroundTheWorld.domain.usecase
 
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
-import com.project.weatherAroundTheWorld.domain.repository.CitiesRepository
-import com.project.weatherAroundTheWorld.domain.usecase.GetCitiesListUseCase
-import com.project.weatherAroundTheWorld.utils.ApiConstants
+import com.project.domain.repository.CitiesRepository
+import com.project.domain.usecase.GetCitiesListUseCase
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.runTest
 import org.junit.*

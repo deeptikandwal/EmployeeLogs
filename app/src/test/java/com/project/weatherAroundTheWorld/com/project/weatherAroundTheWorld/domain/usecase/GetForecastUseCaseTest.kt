@@ -1,8 +1,8 @@
-package com.project.weatherAroundTheWorld.com.project.onscreen.domain.usecase
+package com.project.weatherAroundTheWorld.com.project.weatherAroundTheWorld.domain.usecase
 
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
-import com.project.weatherAroundTheWorld.domain.repository.ForecastRepository
-import com.project.weatherAroundTheWorld.domain.usecase.GetForecastUseCase
+import com.project.domain.repository.ForecastRepository
+import com.project.domain.usecase.GetForecastUseCase
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.runTest
 import org.junit.*
@@ -19,7 +19,7 @@ class GetForecastUseCaseTest {
     lateinit var getForecastUseCase: GetForecastUseCase
 
     @Mock
-    lateinit var forecastRepository:ForecastRepository
+    lateinit var forecastRepository: ForecastRepository
     val apikey="ddddddddddddddddddddddd"
 
     @Before

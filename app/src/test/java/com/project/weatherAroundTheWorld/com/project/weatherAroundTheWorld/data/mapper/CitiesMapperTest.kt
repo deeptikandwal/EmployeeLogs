@@ -1,11 +1,11 @@
-package com.project.weatherAroundTheWorld.com.project.onscreen.data.mapper
+package com.project.weatherAroundTheWorld.com.project.weatherAroundTheWorld.data.mapper
 
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
-import com.project.weatherAroundTheWorld.data.db.entity.EmployeeEntity
-import com.project.weatherAroundTheWorld.data.mapper.CitiesMapper
-import com.project.weatherAroundTheWorld.data.response.CitiesDto
-import com.project.weatherAroundTheWorld.data.response.Country
-import com.project.weatherAroundTheWorld.data.response.Region
+import com.project.mapper.CitiesMapper
+import com.project.response.CitiesDto
+import com.project.response.Country
+import com.project.response.Region
+
 import org.junit.Assert
 import org.junit.Before
 import org.junit.Rule

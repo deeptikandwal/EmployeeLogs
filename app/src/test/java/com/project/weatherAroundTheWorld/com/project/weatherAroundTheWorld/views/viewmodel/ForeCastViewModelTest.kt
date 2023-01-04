@@ -1,8 +1,8 @@
-package com.project.weatherAroundTheWorld.com.project.onscreen.views.viewmodel
+package com.project.weatherAroundTheWorld.com.project.weatherAroundTheWorld.views.viewmodel
 
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
-import com.project.weatherAroundTheWorld.domain.model.DailyForecastDomainModel
-import com.project.weatherAroundTheWorld.domain.usecase.GetForecastUseCase
+import com.project.domain.model.DailyForecastDomainModel
+import com.project.domain.usecase.GetForecastUseCase
 import com.project.weatherAroundTheWorld.views.viewmodel.ForeCastViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi

@@ -1,15 +1,15 @@
-package com.project.weatherAroundTheWorld.com.project.onscreen.data.repository
+package com.project.weatherAroundTheWorld.com.project.weatherAroundTheWorld.data.repository
 
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import com.google.gson.Gson
-import com.project.weatherAroundTheWorld.data.api.ApiService
 import com.project.weatherAroundTheWorld.data.db.WeatherDb
-import com.project.weatherAroundTheWorld.data.db.dao.ForecastDao
-import com.project.weatherAroundTheWorld.data.db.entity.AnimeEntity
-import com.project.weatherAroundTheWorld.data.mapper.DailyForecastMapper
-import com.project.weatherAroundTheWorld.data.repository.ForecastRepositoryImpl
-import com.project.weatherAroundTheWorld.data.response.*
-import com.project.weatherAroundTheWorld.domain.model.DailyForecastDomainModel
+import com.project.db.dao.ForecastDao
+import com.project.mapper.DailyForecastMapper
+import com.project.repository.ForecastRepositoryImpl
+import com.project.domain.model.DailyForecastDomainModel
+import com.project.response.DailyForecastDto
+import com.project.response.Metric
+import com.project.response.Temperature
 import com.project.weatherAroundTheWorld.utils.ConnectionUtils
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.asFlow
@@ -43,7 +43,7 @@ class ForecastRepositoryImplTest {
     var rule: TestRule = InstantTaskExecutorRule()
     val dispatcher = TestCoroutineDispatcher()
     lateinit var mockWebServer:MockWebServer
-    lateinit var apiService: ApiService
+    lateinit var apiService: com.project.api.ApiService
     lateinit var forecastRepositoryImpl: ForecastRepositoryImpl
 
     @Mock
@@ -65,7 +65,7 @@ class ForecastRepositoryImplTest {
             .client(OkHttpClient())
             .addConverterFactory(GsonConverterFactory.create())
             .build()
-            .create(ApiService::class.java)
+            .create(com.project.api.ApiService::class.java)
         Mockito.`when`(weatherDb.foreCastDao()).thenReturn(forecastDao)
         forecastRepositoryImpl = ForecastRepositoryImpl(weatherDb, apiService, dispatcher, mapper,connectionUtils)
     }

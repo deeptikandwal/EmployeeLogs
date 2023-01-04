@@ -1,17 +1,15 @@
-package com.project.weatherAroundTheWorld.com.project.onscreen.data.repository
+package com.project.weatherAroundTheWorld.com.project.weatherAroundTheWorld.data.repository
 
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import com.google.gson.Gson
-import com.project.weatherAroundTheWorld.data.api.ApiService
 import com.project.weatherAroundTheWorld.data.db.WeatherDb
-import com.project.weatherAroundTheWorld.data.db.dao.CitiesDao
-import com.project.weatherAroundTheWorld.data.mapper.CitiesMapper
-import com.project.weatherAroundTheWorld.data.repository.CitiesRepositoryImpl
-import com.project.weatherAroundTheWorld.data.response.CitiesDto
-import com.project.weatherAroundTheWorld.data.response.Country
-import com.project.weatherAroundTheWorld.data.response.GeoPosition
-import com.project.weatherAroundTheWorld.data.response.Region
-import com.project.weatherAroundTheWorld.domain.model.CitiesDomainModel
+import com.project.db.dao.CitiesDao
+import com.project.mapper.CitiesMapper
+import com.project.repository.CitiesRepositoryImpl
+import com.project.response.CitiesDto
+import com.project.response.Country
+import com.project.response.GeoPosition
+import com.project.response.Region
 import com.project.weatherAroundTheWorld.utils.ApiConstants
 import com.project.weatherAroundTheWorld.utils.ConnectionUtils
 import kotlinx.coroutines.Dispatchers
@@ -33,7 +31,8 @@ import java.net.HttpURLConnection
 
 @OptIn(ExperimentalCoroutinesApi::class)
 class CitiesRepositoryImplTest {
-    private var citiesDto= listOf(CitiesDto("Berlin","Germany","11234", Region("Europe"), Country("Germany"),
+    private var citiesDto= listOf(
+        CitiesDto("Berlin","Germany","11234", Region("Europe"), Country("Germany"),
         GeoPosition("23.45","45.56")
     ),)
     val apikey="ddddddddddddddddddddddd"
@@ -58,7 +57,7 @@ class CitiesRepositoryImplTest {
     lateinit var mapper: CitiesMapper
 
     private lateinit var mockWebServer: MockWebServer
-    lateinit var apiService: ApiService
+    lateinit var apiService: com.project.api.ApiService
 
     @Before
     fun setUp() {
@@ -71,7 +70,7 @@ class CitiesRepositoryImplTest {
             .client(OkHttpClient())
             .addConverterFactory(GsonConverterFactory.create())
             .build()
-            .create(ApiService::class.java)
+            .create(com.project.api.ApiService::class.java)
         Mockito.`when`(weatherDb.citiesDao()).thenReturn(dbDao)
         citiesRepositoryImpl = CitiesRepositoryImpl(weatherDb, apiService,  dispatcher,mapper, connectionUtils)
     }
@@ -79,7 +78,12 @@ class CitiesRepositoryImplTest {
     @Test
     fun `get Employees from db using flow`() = runTest {
         val citiesDomainList = listOf(
-            CitiesDomainModel(1, "11234", "Europe(23.45,45.56)", "Berlin(Germany)"),
+            com.project.domain.model.CitiesDomainModel(
+                1,
+                "11234",
+                "Europe(23.45,45.56)",
+                "Berlin(Germany)"
+            ),
         )
 
         Mockito.`when`(connectionUtils.isNetworkAvailable()).thenReturn(false)
