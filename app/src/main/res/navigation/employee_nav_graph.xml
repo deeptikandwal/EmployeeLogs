@@ -5,10 +5,10 @@
     android:id="@+id/employee_nav_graph"
     app:startDestination="@id/homescreen">
 
-    <fragment android:name="com.project.employeeLogs.views.fragments.EmployeeLogsFragment"
+    <fragment android:name="com.project.weatherAroundTheWorld.views.fragments.LoadCitiesFragment"
         android:label="HomeScreenFragment"
         android:id="@+id/homescreen"
-        tools:layout="@layout/fragment_employee_logs">
+        tools:layout="@layout/fragment_load_cities">
         <action android:id="@+id/homescreen_to_detailscreen"
             app:destination="@id/animeFragment"
             app:launchSingleTop="true"
@@ -16,10 +16,10 @@
             app:popUpTo="@id/homescreen"/>
     </fragment>
 
-    <fragment android:name="com.project.employeeLogs.views.fragments.AnimeFragment"
+    <fragment android:name="com.project.weatherAroundTheWorld.views.fragments.ForeCastFragment"
         android:label="AnimeFragment"
         android:id="@+id/animeFragment"
-        tools:layout="@layout/fragment_anime">
+        tools:layout="@layout/fragment_forecast">
 
     </fragment>
 

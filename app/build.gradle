@@ -8,11 +8,11 @@ plugins {
 apply from: 'jacoco.gradle'
 
 android {
-    namespace 'com.project.employeeLogs'
+    namespace 'com.project.weatherAroundTheWorld'
     compileSdk 32
 
     defaultConfig {
-        applicationId "com.project.employeeLogs"
+        applicationId "com.project.weatherAroundTheWorld"
         minSdk 21
         targetSdk 32
         versionCode 1
@@ -48,6 +48,7 @@ android {
                 }
             }
         }
+
     }
     kotlinOptions {
         jvmTarget = '1.8'

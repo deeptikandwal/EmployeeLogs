@@ -27,6 +27,6 @@ dependencyResolutionManagement {
         mavenCentral()
     }
 }
-rootProject.name = "EmployeeLogs"
+rootProject.name = "WeatherAroundTheWorld"
 include ':app'
 include ':utils'
