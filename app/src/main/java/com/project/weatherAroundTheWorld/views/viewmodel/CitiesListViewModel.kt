@@ -26,20 +26,14 @@ class CitiesListViewModel @Inject constructor(
 
     private fun handleOperation() {
         viewModelScope.launch {
-            try {
-                getCitiesListUseCase(WEATHER_API_KEY).also {
-                        flowCitiesList ->
-                    val list = getCitiesListFromFlow(flowCitiesList)
-                    _state.emit(DataResource.success(list))
-                }
-            } catch (exception: Exception) {
-                _state.emit(DataResource.error(exception.toString(),null))
-            }
+                getCitiesListUseCase(WEATHER_API_KEY)
+                    .catch {e-> _state.emit(DataResource.error(e.toString(),null)) }
+                    .collect{ _state.emit(DataResource.success(it)) }
+
         }
 
     }
 
-    private suspend fun getCitiesListFromFlow(flowCityList: Flow<List<CitiesDomainModel>>)= flowCityList.flatMapConcat { listCityDomain -> listCityDomain.asFlow() }.toList()
 
 
 }
