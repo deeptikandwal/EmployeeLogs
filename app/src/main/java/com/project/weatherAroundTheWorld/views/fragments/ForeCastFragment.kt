@@ -17,7 +17,7 @@ import com.project.weatherAroundTheWorld.R
 import com.project.weatherAroundTheWorld.databinding.FragmentForecastBinding
 import com.project.domain.model.DailyForecastDomainModel
 import com.project.weatherAroundTheWorld.utils.AppConstants
-import com.project.weatherAroundTheWorld.views.viewState.ForeCastState
+import com.project.weatherAroundTheWorld.utils.WeatherDataState
 import com.project.weatherAroundTheWorld.views.viewmodel.ForeCastViewModel
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.Dispatchers
@@ -57,11 +57,8 @@ class ForeCastFragment : Fragment() {
         lifecycleScope.launch {
             repeatOnLifecycle(Lifecycle.State.STARTED) {
                 animeViewModel.state.collect {
-                    when (it) {
-                        is ForeCastState.IDLE -> {
-                            //no ops
-                        }
-                        is ForeCastState.LOADING -> {
+                    when (it.status) {
+                         WeatherDataState.LOADING-> {
                             with(fragmentForecastBinding) {
                                 withContext(Dispatchers.Main){
                                     progress.visibility = View.VISIBLE
@@ -69,14 +66,14 @@ class ForeCastFragment : Fragment() {
                             }
                         }
 
-                        is ForeCastState.SUCCESS -> {
+                        WeatherDataState.SUCCESS -> {
                             fragmentForecastBinding.run {
-                                updateUi(it.forcast.get(0))
+                                updateUi(it.data?.get(0))
                                 progress.visibility = View.GONE
                             }
 
                         }
-                        is ForeCastState.ERROR -> {
+                        WeatherDataState.ERROR-> {
                             with(fragmentForecastBinding){
                                 nodata.visibility=View.VISIBLE
                                 mainLayout.visibility=View.GONE
@@ -89,15 +86,15 @@ class ForeCastFragment : Fragment() {
         }
     }
 
-    private fun updateUi(forecastDomainModel: DailyForecastDomainModel) {
+    private fun updateUi(forecastDomainModel: DailyForecastDomainModel?) {
         with(fragmentForecastBinding) {
 
-            date.text = forecastDomainModel.date
+            date.text = forecastDomainModel?.date
             quote.text =
-                arguments?.getString(AppConstants.CITY).plus(" : ").plus(forecastDomainModel.text)
+                arguments?.getString(AppConstants.CITY).plus(" : ").plus(forecastDomainModel?.text)
             minValue.text =
-                context?.getString(R.string.mintemperature).plus(forecastDomainModel.minValue)
-            if (forecastDomainModel.hasprecipitation) maxValue.text =
+                context?.getString(R.string.mintemperature).plus(forecastDomainModel?.minValue)
+            if (forecastDomainModel?.hasprecipitation == true) maxValue.text =
                 context?.getString(R.string.higlyprecipitated) else maxValue.text =context?.getString(R.string.noprecipitated)
         }.also {
             Glide.with(this)
@@ -110,8 +107,8 @@ class ForeCastFragment : Fragment() {
 
     }
 
-    fun getBitmap(forecastDomainModel: DailyForecastDomainModel): String {
-        if (!forecastDomainModel.isDayTime) {
+    fun getBitmap(forecastDomainModel: DailyForecastDomainModel?): String {
+        if (forecastDomainModel?.isDayTime == false) {
             fragmentForecastBinding.dayNight.text =  context?.getString(R.string.nightsky)
             return "night_sky"
         } else{

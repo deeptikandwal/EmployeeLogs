@@ -34,7 +34,6 @@ class ForecastRepositoryImpl(
                 apiService.getForecast(keyForCity, apiKey).also { dto ->
                     emit(dailyForecastDomainModel(dto, keyForCity))
                     with(dao) {
-                        deleteForecasts()
                         insertForecasts(dailyForecastDomainModel(dto, keyForCity))
                     }
                 }

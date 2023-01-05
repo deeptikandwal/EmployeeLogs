@@ -1,10 +1,11 @@
 package com.project.weatherAroundTheWorld.views.viewmodel
 
+import com.project.weatherAroundTheWorld.utils.DataResource
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.project.domain.model.CitiesDomainModel
 import com.project.domain.usecase.GetCitiesListUseCase
 import com.project.weatherAroundTheWorld.utils.ApiConstants.WEATHER_API_KEY
-import com.project.weatherAroundTheWorld.views.viewState.WeatherState
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
@@ -14,9 +15,9 @@ import javax.inject.Inject
 class CitiesListViewModel @Inject constructor(
     var getCitiesListUseCase: GetCitiesListUseCase
 ) : ViewModel() {
-    lateinit var result: List<com.project.domain.model.CitiesDomainModel>
-    private val _state = MutableStateFlow<WeatherState>(WeatherState.IDLE)
-    val state: StateFlow<WeatherState>
+    lateinit var result: List<CitiesDomainModel>
+    private val _state = MutableStateFlow<DataResource<List<CitiesDomainModel>>>(DataResource.loading(null))
+    val state: StateFlow<DataResource<List<CitiesDomainModel>>>
         get() = _state
 
     init {
@@ -25,21 +26,20 @@ class CitiesListViewModel @Inject constructor(
 
     private fun handleOperation() {
         viewModelScope.launch {
-            _state.emit(WeatherState.LOADING)
             try {
                 getCitiesListUseCase(WEATHER_API_KEY).also {
                         flowCitiesList ->
                     val list = getCitiesListFromFlow(flowCitiesList)
-                    _state.emit(WeatherState.SUCCESS(list))
+                    _state.emit(DataResource.success(list))
                 }
             } catch (exception: Exception) {
-                _state.emit(WeatherState.ERROR(exception.toString()))
+                _state.emit(DataResource.error(exception.toString(),null))
             }
         }
 
     }
 
-    private suspend fun getCitiesListFromFlow(flowCityList: Flow<List<com.project.domain.model.CitiesDomainModel>>)= flowCityList.flatMapConcat { listCityDomain -> listCityDomain.asFlow() }.toList()
+    private suspend fun getCitiesListFromFlow(flowCityList: Flow<List<CitiesDomainModel>>)= flowCityList.flatMapConcat { listCityDomain -> listCityDomain.asFlow() }.toList()
 
 
 }

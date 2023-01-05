@@ -21,8 +21,9 @@ import com.project.weatherAroundTheWorld.R
 import com.project.weatherAroundTheWorld.databinding.FragmentLoadCitiesBinding
 import com.project.domain.model.CitiesDomainModel
 import com.project.weatherAroundTheWorld.utils.AppConstants
+import com.project.weatherAroundTheWorld.utils.DataResource
+import com.project.weatherAroundTheWorld.utils.WeatherDataState
 import com.project.weatherAroundTheWorld.views.adapter.CitiesAdapter
-import com.project.weatherAroundTheWorld.views.viewState.WeatherState
 import com.project.weatherAroundTheWorld.views.viewmodel.CitiesListViewModel
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
@@ -79,6 +80,7 @@ class LoadCitiesFragment : Fragment() {
     }
 
     private fun setObserver() {
+
         lifecycleScope.launch {
             repeatOnLifecycle(Lifecycle.State.STARTED) {
                 mcitiesListViewModel.state.collect {
@@ -88,34 +90,31 @@ class LoadCitiesFragment : Fragment() {
         }
     }
 
-    private fun modifyUiBasedOnViewState(it: WeatherState) {
-        when (it) {
-            is WeatherState.IDLE -> {
-                fragmentLoadCitiesBinding.progress.visibility = View.GONE
-            }
-            is WeatherState.LOADING -> {
+    private fun modifyUiBasedOnViewState(dataResource: DataResource<List<CitiesDomainModel>>) {
+        when (dataResource.status) {
+             WeatherDataState.LOADING-> {
                 with(fragmentLoadCitiesBinding) {
                     progress.visibility = View.VISIBLE
                     recycler.visibility = View.GONE
                 }
             }
 
-            is WeatherState.SUCCESS -> {
+             WeatherDataState.SUCCESS -> {
                 with(fragmentLoadCitiesBinding) {
                     progress.visibility = View.GONE
                     recycler.visibility = View.VISIBLE
                 }
-                updateList(it.cities)
+                updateList(dataResource.data)
             }
 
-            is WeatherState.ERROR -> {
+             WeatherDataState.ERROR -> {
                 fragmentLoadCitiesBinding.progress.visibility = View.GONE
-                Toast.makeText(context, it.error, Toast.LENGTH_LONG).show()
+                Toast.makeText(context, dataResource.message, Toast.LENGTH_LONG).show()
             }
         }
     }
 
-    private fun updateList(cities: List<com.project.domain.model.CitiesDomainModel>) {
+    private fun updateList(cities: List<CitiesDomainModel>?) {
         with(citiesAdapter) {
             setDataList(cities)
             notifyDataSetChanged()
