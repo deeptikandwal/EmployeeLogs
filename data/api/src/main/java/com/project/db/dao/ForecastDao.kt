@@ -14,7 +14,7 @@ interface ForecastDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insertForecasts(foreCast: List<DailyForecastDomainModel>)
 
-    @Query("SELECT * FROM Forecast where keyForCity = :cityKey")
+    @Query("SELECT * FROM Forecast where keyForCity = :cityKey ORDER BY id DESC")
     fun getForeCastForCity(cityKey: String): DailyForecastDomainModel
 
     @Query("DELETE FROM Forecast")
