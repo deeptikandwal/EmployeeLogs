@@ -10,10 +10,11 @@ import java.util.*
 
 class DailyForecastMapper {
     @RequiresApi(Build.VERSION_CODES.O)
-    fun mapToForecastDomain(dtoList: List<DailyForecastDto>): List<DailyForecastDomainModel> {
+    fun mapToForecastDomain(dtoList: List<DailyForecastDto>,keyForCity:String): List<DailyForecastDomainModel> {
         return dtoList.map { dto ->
             DailyForecastDomainModel(
                 0,
+                keyForCity,
                 dto.weatherText,
                 dto.temperature.metric.value.toString().plus(dto.temperature.metric.unit),
                 getDate(dto.localObservationDateTime.orEmpty()),

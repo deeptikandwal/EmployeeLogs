@@ -7,6 +7,7 @@ import androidx.room.PrimaryKey
 data class DailyForecastDomainModel(
     @PrimaryKey(autoGenerate = true)
     val id:Int=0,
+    val keyForCity:String,
     val text:String,
     val minValue: String,
     val date:String,

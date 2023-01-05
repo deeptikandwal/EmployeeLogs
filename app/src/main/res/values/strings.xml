@@ -13,4 +13,5 @@
     <string name="weatherdaily">Daily Forecast</string>
     <string name="fetch">Fetch</string>
     <string name="animename">Hint: Naruto</string>
+    <string name="sorry_no_data_found_please_connect_to_internet">Sorry, No Data Found. Please connect to Internet!!</string>
 </resources>

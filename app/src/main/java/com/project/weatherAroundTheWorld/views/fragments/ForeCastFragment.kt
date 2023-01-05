@@ -4,7 +4,6 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
 import androidx.activity.OnBackPressedCallback
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
@@ -78,8 +77,11 @@ class ForeCastFragment : Fragment() {
 
                         }
                         is ForeCastState.ERROR -> {
-                            fragmentForecastBinding.progress.visibility = View.GONE
-                            Toast.makeText(context, it.error, Toast.LENGTH_LONG).show()
+                            with(fragmentForecastBinding){
+                                nodata.visibility=View.VISIBLE
+                                mainLayout.visibility=View.GONE
+                                progress.visibility = View.GONE
+                            }
                         }
                     }
                 }

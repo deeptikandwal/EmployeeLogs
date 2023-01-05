@@ -4,9 +4,9 @@ import android.os.Build
 import androidx.annotation.RequiresApi
 import com.project.domain.model.DailyForecastDomainModel
 import com.project.domain.repository.ForecastRepository
+import com.project.mapper.DailyForecastMapper
 import com.project.response.DailyForecastDto
 import com.project.weatherAroundTheWorld.data.db.WeatherDb
-import com.project.mapper.DailyForecastMapper
 import com.project.weatherAroundTheWorld.utils.ConnectionUtils
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.flow.Flow
@@ -29,21 +29,22 @@ class ForecastRepositoryImpl(
         keyForCity: String,
         apiKey: String
     ): Flow<List<DailyForecastDomainModel>> =
-        flow{
+        flow {
             if (connectionUtils.isNetworkAvailable()) {
                 apiService.getForecast(keyForCity, apiKey).also { dto ->
-                    emit(dailyForecastDomainModel(dto))
+                    emit(dailyForecastDomainModel(dto, keyForCity))
                     with(dao) {
                         deleteForecasts()
-                        insertForecasts(dailyForecastDomainModel(dto))
+                        insertForecasts(dailyForecastDomainModel(dto, keyForCity))
                     }
                 }
             } else {
-                emit(dao.getForecast())
+                if (dao.getForeCastForCity(keyForCity).keyForCity.equals(keyForCity))
+                    emit(listOf(dao.getForeCastForCity(keyForCity)))
             }
         }.flowOn(dispatcher)
 
     @RequiresApi(Build.VERSION_CODES.O)
-    private fun dailyForecastDomainModel(dto: List<DailyForecastDto>) =
-        mapper.mapToForecastDomain(dto)
+    private fun dailyForecastDomainModel(dto: List<DailyForecastDto>, keyForCity: String) =
+        mapper.mapToForecastDomain(dto, keyForCity)
 }
