@@ -2,8 +2,9 @@ package com.project.mapper
 
 import com.project.domain.model.CitiesDomainModel
 import com.project.response.CitiesDto
+import javax.inject.Inject
 
-class CitiesMapper {
+class CitiesMapper @Inject constructor(){
     fun mapCitiesToDomain(citiesDto: List<CitiesDto>):List<CitiesDomainModel>{
        return citiesDto.map { dto ->
             CitiesDomainModel(0,
