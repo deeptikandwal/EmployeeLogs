@@ -32,7 +32,7 @@ class DailyForecastMapper @Inject constructor() {
     private fun getDate(dt: String?): String {
         val inputFormatter: DateTimeFormatter =
             DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ssXXX", Locale.ENGLISH)
-        val outputFormatter: DateTimeFormatter = DateTimeFormatter.ofPattern("EEEE, MMMM d, yyyy 'at' hh:mm a", Locale.ENGLISH)
+        val outputFormatter: DateTimeFormatter = DateTimeFormatter.ofPattern("E, MMMM d, yyyy 'at' hh:mm a", Locale.ENGLISH)
         val date: LocalDateTime = LocalDateTime.parse(dt, inputFormatter)
         val formattedDate: String = outputFormatter.format(date)
         return formattedDate
