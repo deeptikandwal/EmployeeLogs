@@ -13,9 +13,9 @@ import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.fragment.findNavController
 import com.bumptech.glide.Glide
+import com.project.domain.model.DailyForecastDomainModel
 import com.project.weatherAroundTheWorld.R
 import com.project.weatherAroundTheWorld.databinding.FragmentForecastBinding
-import com.project.domain.model.DailyForecastDomainModel
 import com.project.weatherAroundTheWorld.utils.AppConstants
 import com.project.weatherAroundTheWorld.utils.WeatherDataState
 import com.project.weatherAroundTheWorld.views.viewmodel.ForeCastViewModel
@@ -58,9 +58,9 @@ class ForeCastFragment : Fragment() {
             repeatOnLifecycle(Lifecycle.State.STARTED) {
                 animeViewModel.state.collect {
                     when (it.status) {
-                         WeatherDataState.LOADING-> {
+                        WeatherDataState.LOADING -> {
                             with(fragmentForecastBinding) {
-                                withContext(Dispatchers.Main){
+                                withContext(Dispatchers.Main) {
                                     progress.visibility = View.VISIBLE
                                 }
                             }
@@ -73,10 +73,10 @@ class ForeCastFragment : Fragment() {
                             }
 
                         }
-                        WeatherDataState.ERROR-> {
-                            with(fragmentForecastBinding){
-                                nodata.visibility=View.VISIBLE
-                                mainLayout.visibility=View.GONE
+                        WeatherDataState.ERROR -> {
+                            with(fragmentForecastBinding) {
+                                nodata.visibility = View.VISIBLE
+                                mainLayout.visibility = View.GONE
                                 progress.visibility = View.GONE
                             }
                         }
@@ -95,12 +95,19 @@ class ForeCastFragment : Fragment() {
             minValue.text =
                 context?.getString(R.string.mintemperature).plus(forecastDomainModel?.minValue)
             if (forecastDomainModel?.hasprecipitation == true) maxValue.text =
-                context?.getString(R.string.higlyprecipitated) else maxValue.text =context?.getString(R.string.noprecipitated)
+                context?.getString(R.string.precipitation).plus(" : ")
+                    .plus(context?.getString(R.string.higlyprecipitated))
+            else maxValue.text = context?.getString(R.string.precipitation).plus(" : ").plus(
+                context?.getString(R.string.noprecipitated))
         }.also {
             Glide.with(this)
                 .load(
                     getResources()
-                        .getIdentifier(getBitmap(forecastDomainModel), "drawable", context?.packageName)
+                        .getIdentifier(
+                            getBitmap(forecastDomainModel),
+                            "drawable",
+                            context?.packageName
+                        )
                 )
                 .into(fragmentForecastBinding.imgview)
         }
@@ -109,20 +116,20 @@ class ForeCastFragment : Fragment() {
 
     fun getBitmap(forecastDomainModel: DailyForecastDomainModel?): String {
         if (forecastDomainModel?.isDayTime == false) {
-            fragmentForecastBinding.dayNight.text =  context?.getString(R.string.nightsky)
+            fragmentForecastBinding.dayNight.text = context?.getString(R.string.nightsky)
             return "night_sky"
-        } else{
-            fragmentForecastBinding.dayNight.text =  context?.getString(R.string.daytime)
+        } else {
+            fragmentForecastBinding.dayNight.text = context?.getString(R.string.daytime)
             return "day_sky"
         }
     }
 
     private fun setViews() {
-       requireActivity().onBackPressedDispatcher.addCallback(object:OnBackPressedCallback(true){
-           override fun handleOnBackPressed() {
-               findNavController().navigate(R.id.homescreen)
-           }
-       })
+        requireActivity().onBackPressedDispatcher.addCallback(object : OnBackPressedCallback(true) {
+            override fun handleOnBackPressed() {
+                findNavController().navigate(R.id.homescreen)
+            }
+        })
         with(fragmentForecastBinding) {
             back.setOnClickListener {
                 findNavController().navigate(R.id.homescreen)

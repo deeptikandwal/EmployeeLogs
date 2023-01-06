@@ -1,17 +1,15 @@
 <resources>
     <string name="app_name">WeatherApp</string>
-    <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="cities">World wide cities </string>
-    <string name="mintemperature">Current temperature: </string>
+    <string name="mintemperature">Current temperature  : </string>
     <string name="nightsky">Night Sky </string>
-    <string name="higlyprecipitated">Highly Precipitated</string>
-    <string name="noprecipitated">No Precipitation</string>
+    <string name="higlyprecipitated">Highly precipitated</string>
+    <string name="noprecipitated">No precipitation</string>
     <string name="daytime">Day Time</string>
-    <string name="maxtemperature">Precipitation: </string>
+    <string name="precipitation">Precipitation: </string>
     <string name="region">Region -</string>
     <string name="weatherreport">Weather Report</string>
     <string name="weatherdaily">Daily Forecast</string>
     <string name="fetch">Fetch</string>
-    <string name="animename">Hint: Naruto</string>
     <string name="sorry_no_data_found_please_connect_to_internet">Sorry, No Data Found. Please connect to Internet!!</string>
 </resources>

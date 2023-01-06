@@ -17,6 +17,7 @@ import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.project.weatherAroundTheWorld.R
 import com.project.weatherAroundTheWorld.databinding.FragmentLoadCitiesBinding
 import com.project.domain.model.CitiesDomainModel
@@ -64,7 +65,7 @@ class LoadCitiesFragment : Fragment() {
             }
         })
         with(fragmentLoadCitiesBinding) {
-            recycler.run {
+            recycler.apply {
                 addItemDecoration(
                     DividerItemDecoration(
                         recycler.context,

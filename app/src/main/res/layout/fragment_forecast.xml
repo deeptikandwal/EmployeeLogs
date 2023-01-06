@@ -10,7 +10,7 @@
             android:id="@+id/toolbar"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@color/design_default_color_primary_dark"
+            android:background="@color/teal_700"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="parent"
@@ -34,9 +34,10 @@
                     android:layout_height="wrap_content"
                     android:gravity="center"
                     android:padding="@dimen/medium_padding"
+                    android:fontFamily="@font/martianmonomedium"
                     android:text="@string/weatherdaily"
                     android:textColor="@color/white"
-                    android:textSize="@dimen/large_text" />
+                    android:textSize="@dimen/medium_text" />
             </RelativeLayout>
         </androidx.appcompat.widget.Toolbar>
         <androidx.appcompat.widget.AppCompatTextView
@@ -136,8 +137,7 @@
                 android:layout_height="40dp"
                 android:padding="5sp"
                 android:layout_marginTop="@dimen/margin_medium"
-                android:textFontWeight="800"
-                android:textColor="@color/black"
+                android:textFontWeight="500"
                 android:layout_marginStart="@dimen/large_padding"
                 android:text="@string/mintemperature"
                 android:fontFamily="@font/martianmonoregular"
@@ -150,14 +150,13 @@
             <androidx.appcompat.widget.AppCompatTextView
                 android:id="@+id/maxValue"
                 android:layout_width="match_parent"
-                android:layout_height="40dp"
+                android:layout_height="wrap_content"
                 android:padding="5sp"
-                android:textColor="@color/black"
                 android:layout_marginStart="@dimen/large_padding"
                 android:layout_marginEnd="@dimen/large_padding"
                 android:fontFamily="@font/martianmonomedium"
                 android:textFontWeight="500"
-                android:text="@string/maxtemperature"
+                android:text="@string/precipitation"
                 android:textSize="@dimen/medium_text"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"

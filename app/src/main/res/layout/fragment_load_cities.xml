@@ -11,8 +11,8 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             app:layout_constraintEnd_toEndOf="parent"
+            android:background="@color/teal_700"
             app:layout_constraintHorizontal_bias="0.0"
-            android:background="@color/design_default_color_primary_dark"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" >
 
@@ -29,8 +29,9 @@
                 android:gravity="center"
                 android:padding="@dimen/medium_padding"
                 android:text="@string/cities"
+                android:fontFamily="@font/martianmonomedium"
                 android:textColor="@color/white"
-                android:textSize="@dimen/large_text"
+                android:textSize="@dimen/medium_text"
               />
         </androidx.appcompat.widget.Toolbar>
 
