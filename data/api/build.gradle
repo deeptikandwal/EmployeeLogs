@@ -34,6 +34,7 @@ android {
 }
 
 dependencies {
+    //api is public
     api project(':utils')
     api project(':domain')
     //hilt

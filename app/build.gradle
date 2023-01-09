@@ -58,9 +58,6 @@ android {
     }
 }
 dependencies {
-    implementation project(':data:api')
-    implementation project(':utils')
-    implementation project(':domain')
     implementation project(':di')
     implementation 'androidx.constraintlayout:constraintlayout:2.1.4'
     implementation 'androidx.test.ext:junit-ktx:1.1.4'
