@@ -1,22 +1,24 @@
-package com.project.weatherAroundTheWorld.com.project.weatherAroundTheWorld.data.repository
+package com.project.repository
 
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import com.google.gson.Gson
 import com.project.db.dao.CitiesDao
 import com.project.db.database.WeatherDb
-import com.project.domain.model.CitiesDomainModel
+import com.project.db.entity.CitiesEntity
+import com.project.mapper.CitiesMapper
 import com.project.response.CitiesDto
 import com.project.response.Country
 import com.project.response.GeoPosition
 import com.project.response.Region
-import com.project.weatherAroundTheWorld.data.mapper.CitiesMapper
-import com.project.weatherAroundTheWorld.data.repository.CitiesRepositoryImpl
 import com.project.weatherAroundTheWorld.utils.ApiConstants
 import com.project.weatherAroundTheWorld.utils.ConnectionUtils
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.*
-import kotlinx.coroutines.test.*
+import kotlinx.coroutines.test.TestCoroutineDispatcher
+import kotlinx.coroutines.test.resetMain
+import kotlinx.coroutines.test.runTest
+import kotlinx.coroutines.test.setMain
 import okhttp3.OkHttpClient
 import okhttp3.mockwebserver.MockResponse
 import okhttp3.mockwebserver.MockWebServer
@@ -79,7 +81,7 @@ class CitiesRepositoryImplTest {
     @Test
     fun `get Employees from db using flow`() = runTest {
         val citiesDomainList = listOf(
-           CitiesDomainModel(
+           CitiesEntity(
                 1,
                 "11234",
                 "Europe(23.45,45.56)",
@@ -89,7 +91,7 @@ class CitiesRepositoryImplTest {
 
         Mockito.`when`(connectionUtils.isNetworkAvailable()).thenReturn(false)
         Mockito.`when`(dbDao.getAlLCities()).thenReturn(citiesDomainList)
-        Mockito.`when`(mapper.mapCitiesToDomain(citiesDto))
+        Mockito.`when`(mapper.mapCitiesToEntity(citiesDto))
             .thenReturn(citiesDomainList)
         val result = citiesRepositoryImpl.fetchCitiesList(ApiConstants.WEATHER_API_KEY).flatMapConcat { it.asFlow() }.toList()
             .get(0).city

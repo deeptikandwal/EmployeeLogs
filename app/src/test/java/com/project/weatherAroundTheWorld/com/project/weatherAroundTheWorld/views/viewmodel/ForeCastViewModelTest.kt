@@ -44,7 +44,7 @@ class ForeCastViewModelTest {
     @Test
     fun handleOperationSuccessTest(): Unit = runTest(dispatcher) {
         Mockito.`when`(getForecastUseCase.invoke("11234",apikey)).thenReturn(flowOf( listOf(
-            DailyForecastDomainModel(1,"Hazy Cloud" ,"7C" ,"",true,false),
+            DailyForecastDomainModel(1,"11234","Hazy Cloud" ,"7C" ,"",true,false),
         )))
 
         val animeList=getForecastUseCase.invoke("11234",apikey).flatMapConcat { it.asFlow()}.toList()

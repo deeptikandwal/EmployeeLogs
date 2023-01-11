@@ -1,10 +1,9 @@
-package com.project.weatherAroundTheWorld.com.project.weatherAroundTheWorld.domain.usecase
+package com.project.domain.usecase
 
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import com.project.domain.repository.CitiesRepository
-import com.project.domain.usecase.GetCitiesListUseCase
 import kotlinx.coroutines.ExperimentalCoroutinesApi
-import kotlinx.coroutines.test.runTest
+import kotlinx.coroutines.test.runBlockingTest
 import org.junit.*
 import org.junit.rules.TestRule
 import org.mockito.Mock
@@ -12,7 +11,6 @@ import org.mockito.Mockito
 import org.mockito.MockitoAnnotations
 
 @OptIn(ExperimentalCoroutinesApi::class)
-
 class GetCitiesListUseCaseTest {
     @get:Rule
     var rule: TestRule = InstantTaskExecutorRule()
@@ -28,7 +26,7 @@ class GetCitiesListUseCaseTest {
     }
 
     @Test
-    fun `get employees`()= runTest{
+    fun `get employees`()= runBlockingTest{
         getCitiesListUseCase.invoke(apikey)
         Mockito.verify(citiesRepository,Mockito.times(1)).fetchCitiesList(apikey)
     }

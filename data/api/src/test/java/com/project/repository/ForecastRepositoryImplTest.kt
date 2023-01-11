@@ -1,9 +1,10 @@
-package com.project.weatherAroundTheWorld.com.project.weatherAroundTheWorld.data.repository
+package com.project.repository
 
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import com.google.gson.Gson
 import com.project.db.dao.ForecastDao
 import com.project.db.database.WeatherDb
+import com.project.db.entity.DailyForecastEntity
 import com.project.domain.model.DailyForecastDomainModel
 import com.project.mapper.DailyForecastMapper
 import com.project.repository.ForecastRepositoryImpl
@@ -72,14 +73,15 @@ class ForecastRepositoryImplTest {
     @Test
     fun `get anime from db using flow`() = runTest {
 
-        val forecastDomain = listOf(
-            DailyForecastDomainModel(1,"Hazy Cloud" ,"7C" ,"","",true,false),
+        val forecastEntity = listOf(
+            DailyForecastEntity(1,"11234","Hazy Cloud" ,"7C" ,"",true,false),
         )
 
         Mockito.`when`(connectionUtils.isNetworkAvailable()).thenReturn(false)
-        Mockito.`when`(forecastDao.getForecast()).thenReturn(forecastDomain)
-        Mockito.`when`(mapper.mapToForecastDomain(forecastDto,"11234"))
-            .thenReturn(forecastDomain)
+        Mockito.`when`(forecastDao.getForecast()).thenReturn(forecastEntity)
+        Mockito.`when`(forecastDao.getForeCastForCity("11234")).thenReturn(DailyForecastEntity(1,"11234","Hazy Cloud" ,"7C" ,"",true,false),)
+        Mockito.`when`(mapper.mapToForecastEntity(forecastDto,"11234"))
+            .thenReturn(forecastEntity)
         val result = forecastRepositoryImpl.getForecasts("11234",apikey).flatMapConcat { it.asFlow() }.toList()
             .get(0).isDayTime
         Assert.assertEquals(result, true)

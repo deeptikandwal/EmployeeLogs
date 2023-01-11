@@ -52,10 +52,6 @@ b
 2di/src/test/java/com/project/di/ExampleUnitTest.kt,2\9\2957c118c3da2a01493274af322b15ecf1a295b7
 j
 :domain/src/test/java/com/project/domain/ExampleUnitTest.kt,8\7\879379f4dcc4575f051b2043b5b7bb71536b1ddf
-±
-€app/src/test/java/com/project/weatherAroundTheWorld/com/project/weatherAroundTheWorld/views/viewmodel/CitiesListViewModelTest.kt,e\8\e8ebdc65b1d9c1c129c1e1dcd89e930bc590f8a5
-®
-~app/src/test/java/com/project/weatherAroundTheWorld/com/project/weatherAroundTheWorld/views/viewmodel/ForeCastViewModelTest.kt,4\9\497fd43074ff03cbdea9a57be198be871af93bda
 v
 Fapp/src/main/java/com/project/weatherAroundTheWorld/MainApplication.kt,3\6\36bbfe9884832a41fdc2c1a9b8adde36b88d2578
 h
@@ -100,11 +96,7 @@ g
 7di/src/main/java/com/project/di/module/NetworkModule.kt,5\1\5181853e423a8f77d77e5cd33610d7be8077482d
 j
 :di/src/main/java/com/project/di/module/DispatcherModule.kt,4\8\48542a26d24c746ef0e99075b42b73b144b60a52
-@
-app/build.gradle,f\4\f4a01d6a4fcb971362ec00a83903fd3902f52164
 o
 ?data/api/src/main/java/com/project/response/DailyForecastDto.kt,2\4\2458e912592e7bdc251748540133e6235983f50f
 d
 4data/api/src/main/java/com/project/api/ApiService.kt,7\6\76ef3be18bb8d92c738b9baad2a3d5b057dcae49
-C
-domain/build.gradle,a\3\a3021bb5ba623a461b5fdb89ae51923a4945c354

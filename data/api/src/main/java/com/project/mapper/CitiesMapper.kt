@@ -1,12 +1,11 @@
 package com.project.mapper
 
 import com.project.db.entity.CitiesEntity
-import com.project.domain.model.CitiesDomainModel
 import com.project.response.CitiesDto
 import javax.inject.Inject
 
 class CitiesMapper @Inject constructor() {
-    fun mapCitiesToDomain(citiesDto: List<CitiesDto>):List<CitiesEntity>{
+    fun mapCitiesToEntity(citiesDto: List<CitiesDto>):List<CitiesEntity>{
         return citiesDto.map { dto ->
             CitiesEntity(0,
                 dto.key,

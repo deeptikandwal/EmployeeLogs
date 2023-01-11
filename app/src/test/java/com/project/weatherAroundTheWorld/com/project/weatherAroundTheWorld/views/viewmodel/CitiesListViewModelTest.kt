@@ -1,6 +1,7 @@
 package com.project.weatherAroundTheWorld.com.project.weatherAroundTheWorld.views.viewmodel
 
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
+import com.project.domain.model.CitiesDomainModel
 import com.project.domain.usecase.GetCitiesListUseCase
 import com.project.weatherAroundTheWorld.views.viewmodel.CitiesListViewModel
 import kotlinx.coroutines.Dispatchers
@@ -46,8 +47,7 @@ class CitiesListViewModelTest {
     @Test
     fun handleOperationSuccessTest(): Unit = runTest {
         Mockito.`when`(getCitiesListUseCase(apikey)).thenReturn(flowOf( listOf(
-            com.project.domain.model.CitiesDomainModel(
-                1,
+        CitiesDomainModel(
                 "11234",
                 "Europe(23.45,45.56)",
                 "Berlin(Germany)"

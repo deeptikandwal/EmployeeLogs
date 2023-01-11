@@ -1,10 +1,10 @@
-package com.project.weatherAroundTheWorld.com.project.weatherAroundTheWorld.domain.usecase
+package com.project.domain.usecase
 
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import com.project.domain.repository.ForecastRepository
 import com.project.domain.usecase.GetForecastUseCase
 import kotlinx.coroutines.ExperimentalCoroutinesApi
-import kotlinx.coroutines.test.runTest
+import kotlinx.coroutines.test.runBlockingTest
 import org.junit.*
 import org.junit.rules.TestRule
 import org.mockito.Mock
@@ -29,7 +29,7 @@ class GetForecastUseCaseTest {
     }
 
     @Test
-    fun getAnimesTest() = runTest {
+    fun getAnimesTest() = runBlockingTest {
         getForecastUseCase.invoke("11234",apikey)
         Mockito.verify(forecastRepository, Mockito.times(1)).getForecasts("11234",apikey)
     }

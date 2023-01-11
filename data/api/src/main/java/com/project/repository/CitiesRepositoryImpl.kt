@@ -26,22 +26,16 @@ class CitiesRepositoryImpl(
         flow {
             if (connectionUtils.isNetworkAvailable()) {
                 apiService.fetchCitiesList("150", apiKey).also { list ->
-                    emit(getCitiesDomainList(list).map {
-                            getDomainModel(it)
-                    })
+                    emit(getCitiesDomainList(list).map { getDomainModel(it) })
                     dao.insertCities(getCitiesDomainList(list))
                 }
             } else {
-                emit(dao.getAlLCities().map {
-                    getDomainModel(it)
-                })
+                emit(dao.getAlLCities().map {getDomainModel(it)})
             }
         }.flowOn(dispatcher)
 
-    private fun getDomainModel(it: CitiesEntity) =
-        CitiesDomainModel(it.key, it.region, it.city)
+    private fun getDomainModel(it: CitiesEntity) = CitiesDomainModel(it.key, it.region, it.city)
 
-    private fun getCitiesDomainList(list: List<CitiesDto>) =
-        mapper.mapCitiesToDomain(list)
+    private fun getCitiesDomainList(list: List<CitiesDto>) = mapper.mapCitiesToEntity(list)
 
 }
