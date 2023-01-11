@@ -4,18 +4,18 @@ import androidx.room.Dao
 import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
-import com.project.domain.model.DailyForecastDomainModel
+import com.project.db.entity.DailyForecastEntity
 
 @Dao
 interface ForecastDao {
     @Query("SELECT * FROM Forecast")
-    fun getForecast(): List<DailyForecastDomainModel>
+    fun getForecast(): List<DailyForecastEntity>
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    suspend fun insertForecasts(foreCast: List<DailyForecastDomainModel>)
+    suspend fun insertForecasts(foreCast: List<DailyForecastEntity>)
 
     @Query("SELECT * FROM Forecast where keyForCity = :cityKey ORDER BY id DESC")
-    fun getForeCastForCity(cityKey: String): DailyForecastDomainModel
+    fun getForeCastForCity(cityKey: String): DailyForecastEntity
 
     @Query("DELETE FROM Forecast")
     suspend fun deleteForecasts()

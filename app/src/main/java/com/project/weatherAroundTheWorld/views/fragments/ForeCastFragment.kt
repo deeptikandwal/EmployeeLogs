@@ -86,7 +86,7 @@ class ForeCastFragment : Fragment() {
             quote.text =
                 arguments?.getString(AppConstants.CITY).plus(" : ").plus(forecastDomainModel?.text)
             minValue.text =
-                context?.getString(R.string.mintemperature).plus(forecastDomainModel?.minValue)
+                context?.getString(R.string.mintemperature).plus(forecastDomainModel?.currentTemperature)
             if (forecastDomainModel?.hasprecipitation == true) maxValue.text =
                 context?.getString(R.string.precipitation).plus(" : ")
                     .plus(context?.getString(R.string.higlyprecipitated))

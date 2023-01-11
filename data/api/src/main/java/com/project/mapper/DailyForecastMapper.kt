@@ -2,6 +2,7 @@ package com.project.mapper
 
 import android.os.Build
 import androidx.annotation.RequiresApi
+import com.project.db.entity.DailyForecastEntity
 import com.project.domain.model.DailyForecastDomainModel
 import com.project.response.DailyForecastDto
 import java.time.LocalDateTime
@@ -11,12 +12,12 @@ import javax.inject.Inject
 
 class DailyForecastMapper @Inject constructor() {
     @RequiresApi(Build.VERSION_CODES.O)
-    fun mapToForecastDomain(
+    fun mapToForecastEntity(
         dtoList: List<DailyForecastDto>,
         keyForCity: String
-    ): List<DailyForecastDomainModel> {
+    ): List<DailyForecastEntity> {
         return dtoList.map { dto ->
-            DailyForecastDomainModel(
+            DailyForecastEntity(
                 0,
                 keyForCity,
                 dto.weatherText,
@@ -25,7 +26,7 @@ class DailyForecastMapper @Inject constructor() {
                 dto.isDayTime,
                 dto.hasPrecipitation,
             )
-        }.toList()
+        }
     }
 
     @RequiresApi(Build.VERSION_CODES.O)

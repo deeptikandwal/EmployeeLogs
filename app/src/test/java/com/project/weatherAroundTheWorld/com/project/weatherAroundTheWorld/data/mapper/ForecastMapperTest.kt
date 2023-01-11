@@ -29,7 +29,7 @@ class ForecastMapperTest {
 
        @Test
     fun mapToAnimeDomainTest(){
-        Assert.assertEquals(mapper.mapToForecastDomain(dailyForecastDtos).get(0).hasprecipitation,false)
+        Assert.assertEquals(mapper.mapToForecastDomain(dailyForecastDtos,"11234").get(0).hasprecipitation,false)
     }
 
 

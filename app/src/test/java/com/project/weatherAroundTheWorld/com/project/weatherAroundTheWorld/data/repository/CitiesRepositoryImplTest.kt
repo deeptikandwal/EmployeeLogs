@@ -2,14 +2,15 @@ package com.project.weatherAroundTheWorld.com.project.weatherAroundTheWorld.data
 
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import com.google.gson.Gson
-import com.project.weatherAroundTheWorld.data.db.WeatherDb
 import com.project.db.dao.CitiesDao
-import com.project.mapper.CitiesMapper
-import com.project.repository.CitiesRepositoryImpl
+import com.project.db.database.WeatherDb
+import com.project.domain.model.CitiesDomainModel
 import com.project.response.CitiesDto
 import com.project.response.Country
 import com.project.response.GeoPosition
 import com.project.response.Region
+import com.project.weatherAroundTheWorld.data.mapper.CitiesMapper
+import com.project.weatherAroundTheWorld.data.repository.CitiesRepositoryImpl
 import com.project.weatherAroundTheWorld.utils.ApiConstants
 import com.project.weatherAroundTheWorld.utils.ConnectionUtils
 import kotlinx.coroutines.Dispatchers
@@ -78,7 +79,7 @@ class CitiesRepositoryImplTest {
     @Test
     fun `get Employees from db using flow`() = runTest {
         val citiesDomainList = listOf(
-            com.project.domain.model.CitiesDomainModel(
+           CitiesDomainModel(
                 1,
                 "11234",
                 "Europe(23.45,45.56)",

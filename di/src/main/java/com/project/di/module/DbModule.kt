@@ -2,7 +2,7 @@ package com.project.di.module
 
 import android.app.Application
 import androidx.room.Room
-import com.project.weatherAroundTheWorld.data.db.WeatherDb
+import com.project.db.database.WeatherDb
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn

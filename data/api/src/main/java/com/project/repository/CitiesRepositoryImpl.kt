@@ -1,10 +1,11 @@
 package com.project.repository
-
+import com.project.api.ApiService
+import com.project.db.database.WeatherDb
+import com.project.db.entity.CitiesEntity
 import com.project.domain.model.CitiesDomainModel
 import com.project.domain.repository.CitiesRepository
-import com.project.response.CitiesDto
-import com.project.weatherAroundTheWorld.data.db.WeatherDb
 import com.project.mapper.CitiesMapper
+import com.project.response.CitiesDto
 import com.project.weatherAroundTheWorld.utils.ConnectionUtils
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.flow.Flow
@@ -14,7 +15,7 @@ import javax.inject.Named
 
 class CitiesRepositoryImpl(
     val weatherDb: WeatherDb,
-    val apiService: com.project.api.ApiService,
+    val apiService: ApiService,
     @Named("ioDispatcher")
     val dispatcher: CoroutineDispatcher,
     val mapper: CitiesMapper,
@@ -25,13 +26,20 @@ class CitiesRepositoryImpl(
         flow {
             if (connectionUtils.isNetworkAvailable()) {
                 apiService.fetchCitiesList("150", apiKey).also { list ->
-                    emit(getCitiesDomainList(list))
+                    emit(getCitiesDomainList(list).map {
+                            getDomainModel(it)
+                    })
                     dao.insertCities(getCitiesDomainList(list))
                 }
             } else {
-                emit(dao.getAlLCities())
+                emit(dao.getAlLCities().map {
+                    getDomainModel(it)
+                })
             }
         }.flowOn(dispatcher)
+
+    private fun getDomainModel(it: CitiesEntity) =
+        CitiesDomainModel(it.key, it.region, it.city)
 
     private fun getCitiesDomainList(list: List<CitiesDto>) =
         mapper.mapCitiesToDomain(list)

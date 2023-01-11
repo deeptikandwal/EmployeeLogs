@@ -41,6 +41,11 @@ dependencies {
     kapt 'androidx.hilt:hilt-compiler:1.0.0'
     kapt "com.google.dagger:hilt-android-compiler:2.40.5"
     api "com.google.dagger:hilt-android:2.40.5"
+    //room
+    def room_version = "2.4.3"
+    api "androidx.room:room-runtime:$room_version"
+    api "androidx.room:room-ktx:$room_version"
+    kapt "androidx.room:room-compiler:2.5.0-alpha03"
 
     api 'androidx.core:core-ktx:1.7.0'
     api 'androidx.appcompat:appcompat:1.5.1'
