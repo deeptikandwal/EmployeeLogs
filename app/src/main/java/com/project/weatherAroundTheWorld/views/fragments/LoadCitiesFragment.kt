@@ -67,7 +67,7 @@ class LoadCitiesFragment : Fragment(), CitiesAdapter.CustomOnClickListener {
                 adapter = citiesAdapter
             }
             back.setOnClickListener {
-                activity?.finish()
+               activity?.onBackPressed()
             }
         }
     }

@@ -78,8 +78,6 @@ f
 6data/api/src/main/java/com/project/db/dao/CitiesDao.kt,9\d\9d4e56e0d06638091a6da4b69a7984cb4de5d679
 p
 @data/api/src/main/java/com/project/mapper/DailyForecastMapper.kt,5\4\54dc8d3f49b8e81a0cf377f7c1ccf584b653b3f3
-‡
-Wapp/src/main/java/com/project/weatherAroundTheWorld/views/fragments/ForeCastFragment.kt,a\3\a32acc685af12c2f2faa3e05bf6e14de2c90bbb0
 k
 ;data/api/src/main/java/com/project/db/database/WeatherDB.kt,6\e\6ed990bd1bf7f1ab481d7241cc86cd8298173be2
 h

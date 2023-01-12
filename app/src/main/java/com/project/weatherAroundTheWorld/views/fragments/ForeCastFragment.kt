@@ -43,7 +43,7 @@ class ForeCastFragment : Fragment() {
     }
 
     private fun setObserver() {
-        lifecycleScope.launchWhenStarted {
+        lifecycleScope.launch {
             animeViewModel.getForeCastList(arguments?.getString(AppConstants.KEYFORCITY).toString())
         }
 
@@ -81,17 +81,12 @@ class ForeCastFragment : Fragment() {
 
     private fun updateUi(forecastDomainModel: DailyForecastDomainModel?) {
         with(fragmentForecastBinding) {
-
             date.text = forecastDomainModel?.date
-            quote.text =
-                arguments?.getString(AppConstants.CITY).plus(" : ").plus(forecastDomainModel?.text)
-            minValue.text =
-                context?.getString(R.string.mintemperature).plus(forecastDomainModel?.currentTemperature)
+            quote.text = arguments?.getString(AppConstants.CITY).plus(" : ").plus(forecastDomainModel?.text)
+            minValue.text = context?.getString(R.string.mintemperature).plus(forecastDomainModel?.currentTemperature)
             if (forecastDomainModel?.hasprecipitation == true) maxValue.text =
-                context?.getString(R.string.precipitation).plus(" : ")
-                    .plus(context?.getString(R.string.higlyprecipitated))
-            else maxValue.text = context?.getString(R.string.precipitation).plus(" : ").plus(
-                context?.getString(R.string.noprecipitated))
+                context?.getString(R.string.precipitation).plus(" : ").plus(context?.getString(R.string.higlyprecipitated))
+            else maxValue.text = context?.getString(R.string.precipitation).plus(" : ").plus(context?.getString(R.string.noprecipitated))
         }.also {
             Glide.with(this)
                 .load(
@@ -125,7 +120,7 @@ class ForeCastFragment : Fragment() {
         })
         with(fragmentForecastBinding) {
             back.setOnClickListener {
-                findNavController().navigate(R.id.homescreen)
+                activity?.onBackPressed()
             }
         }
     }
