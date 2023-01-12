@@ -1,6 +1,6 @@
 package com.project.weatherAroundTheWorld.utils
 
-data class DataResource<out T>(val status: WeatherDataState, val data: T?, val message: String?) {
+data class DataResource<T>(val status: WeatherDataState, val data: T?, val message: String?) {
 
     companion object {
 
