@@ -6,12 +6,12 @@ import com.project.weatherAroundTheWorld.views.adapter.CitiesAdapter
 
 class CitilesListViewHolder(val citiesListBinding: CitiesListBinding) :
     RecyclerView.ViewHolder(citiesListBinding.root) {
-    fun bind(item: CitiesDomainModel, onItemClickListener: CitiesAdapter.OnClickListener) {
+    fun bind(item: CitiesDomainModel, customOnClickListener:CitiesAdapter.CustomOnClickListener) {
         with(citiesListBinding){
             textViewCityName.text = item.city
             textViewRegion.text=item.region
             container.setOnClickListener {
-               onItemClickListener.onItemClick(item.key,item.city)
+                customOnClickListener.onItemClick(item.key,item.city)
             }
         }
     }

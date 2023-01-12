@@ -16,9 +16,9 @@ import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.project.domain.model.CitiesDomainModel
 import com.project.weatherAroundTheWorld.R
 import com.project.weatherAroundTheWorld.databinding.FragmentLoadCitiesBinding
-import com.project.domain.model.CitiesDomainModel
 import com.project.weatherAroundTheWorld.utils.AppConstants
 import com.project.weatherAroundTheWorld.utils.DataResource
 import com.project.weatherAroundTheWorld.utils.WeatherDataState
@@ -28,23 +28,17 @@ import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
-class LoadCitiesFragment : Fragment() {
+class LoadCitiesFragment : Fragment(), CitiesAdapter.CustomOnClickListener {
     lateinit var fragmentLoadCitiesBinding: FragmentLoadCitiesBinding
     val mcitiesListViewModel: CitiesListViewModel by viewModels()
-    val citiesAdapter = CitiesAdapter(object : CitiesAdapter.OnClickListener {
-        override fun onItemClick(key: String, city: String) {
-            findNavController().navigate(
-                R.id.homescreen_to_detailscreen,
-                bundleOf(AppConstants.KEYFORCITY to key, AppConstants.CITY to city)
-            )
-        }
-    })
+    val citiesAdapter = CitiesAdapter()
+
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View = FragmentLoadCitiesBinding.inflate(
-        layoutInflater,container, false
+        layoutInflater, container, false
     ).also {
         fragmentLoadCitiesBinding = it
     }.root
@@ -56,6 +50,7 @@ class LoadCitiesFragment : Fragment() {
     }
 
     private fun setViews() {
+        citiesAdapter.setCustomOnClickListenerForAdapter(this)
         requireActivity().onBackPressedDispatcher.addCallback(object : OnBackPressedCallback(true) {
             override fun handleOnBackPressed() {
                 activity?.finish()
@@ -90,14 +85,14 @@ class LoadCitiesFragment : Fragment() {
 
     private fun modifyUiBasedOnViewState(dataResource: DataResource<List<CitiesDomainModel>>) {
         when (dataResource.status) {
-             WeatherDataState.LOADING-> {
+            WeatherDataState.LOADING -> {
                 with(fragmentLoadCitiesBinding) {
                     progress.visibility = View.VISIBLE
                     recycler.visibility = View.GONE
                 }
             }
 
-             WeatherDataState.SUCCESS -> {
+            WeatherDataState.SUCCESS -> {
                 with(fragmentLoadCitiesBinding) {
                     progress.visibility = View.GONE
                     recycler.visibility = View.VISIBLE
@@ -105,7 +100,7 @@ class LoadCitiesFragment : Fragment() {
                 updateList(dataResource.data)
             }
 
-             WeatherDataState.ERROR -> {
+            WeatherDataState.ERROR -> {
                 fragmentLoadCitiesBinding.progress.visibility = View.GONE
                 Toast.makeText(context, dataResource.message, Toast.LENGTH_LONG).show()
             }
@@ -117,6 +112,13 @@ class LoadCitiesFragment : Fragment() {
             setDataList(cities)
             notifyDataSetChanged()
         }
+    }
+
+    override fun onItemClick(key: String, city: String) {
+        findNavController().navigate(
+            R.id.homescreen_to_detailscreen,
+            bundleOf(AppConstants.KEYFORCITY to key, AppConstants.CITY to city)
+        )
     }
 
 
